@@ -66,16 +66,16 @@ public class CarModelTest {
             () -> configurer.setTransmission(availableOptions.availableTransmissions().get(1)));
 
         Assertions.assertDoesNotThrow(
-            () -> configurer.setBodyType(availableOptions.availableBodyTypes().getFirst()));
+            () -> configurer.setBodyType(availableOptions.availableBodyTypes().get(0)));
 
         Assertions.assertDoesNotThrow(
-            () -> configurer.setRims(availableOptions.availableRims().getFirst()));
+            () -> configurer.setRims(availableOptions.availableRims().get(0)));
 
         Assertions.assertDoesNotThrow(
-            () -> configurer.setInterior(availableOptions.availableInteriors().getFirst()));
+            () -> configurer.setInterior(availableOptions.availableInteriors().get(0)));
 
         Assertions.assertDoesNotThrow(
-            () -> configurer.setColor(availableOptions.availableColors().getFirst()));
+            () -> configurer.setColor(availableOptions.availableColors().get(0)));
 
 
         CarModel model = configurer.configure();

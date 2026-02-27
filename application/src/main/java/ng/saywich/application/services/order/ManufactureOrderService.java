@@ -32,7 +32,7 @@ public class ManufactureOrderService implements IManufactureOrderService {
     @Override
     public AcceptOrder.Response acceptOrder(AcceptOrder.Request request) {
         CarManufactureOrder order = repository.query(
-            new UUID[] { request.orderId() }).getFirst();
+            new UUID[] { request.orderId() }).get(0);
 
         order.accept();
 
@@ -42,7 +42,7 @@ public class ManufactureOrderService implements IManufactureOrderService {
     @Override
     public WaitForPaymentOrder.Response waitForPaymentOrder(WaitForPaymentOrder.Request request) {
         CarManufactureOrder order = repository.query(
-            new UUID[] { request.orderId() }).getFirst();
+            new UUID[] { request.orderId() }).get(0);
 
         order.waitForPayment();
 
@@ -52,7 +52,7 @@ public class ManufactureOrderService implements IManufactureOrderService {
     @Override
     public PayOrder.Response payOrder(PayOrder.Request request) {
         CarManufactureOrder order = repository.query(
-            new UUID[] { request.orderId() }).getFirst();
+            new UUID[] { request.orderId() }).get(0);
 
         order.pay();
 
@@ -62,7 +62,7 @@ public class ManufactureOrderService implements IManufactureOrderService {
     @Override
     public WaitForDeliveryOrder.Response waitForDeliveryOrder(WaitForDeliveryOrder.Request request) {
         CarManufactureOrder order = repository.query(
-            new UUID[] { request.orderId() }).getFirst();
+            new UUID[] { request.orderId() }).get(0);
 
         order.waitForDelivery();
 
@@ -72,7 +72,7 @@ public class ManufactureOrderService implements IManufactureOrderService {
     @Override
     public DeliverCarOrder.Response deliverCarOrder(DeliverCarOrder.Request request) {
         CarManufactureOrder order = repository.query(
-            new UUID[] { request.orderId() }).getFirst();
+            new UUID[] { request.orderId() }).get(0);
 
         order.deliverCar();
 
@@ -82,7 +82,7 @@ public class ManufactureOrderService implements IManufactureOrderService {
     @Override
     public CompleteOrder.Response completeOrder(CompleteOrder.Request request) {
         CarManufactureOrder order = repository.query(
-            new UUID[] { request.orderId() }).getFirst();
+            new UUID[] { request.orderId() }).get(0);
 
         order.complete();
 
@@ -92,7 +92,7 @@ public class ManufactureOrderService implements IManufactureOrderService {
     @Override
     public CancelOrder.Response cancelOrder(CancelOrder.Request request) {
         CarManufactureOrder order = repository.query(
-            new UUID[] { request.orderId() }).getFirst();
+            new UUID[] { request.orderId() }).get(0);
 
         order.cancel();
 

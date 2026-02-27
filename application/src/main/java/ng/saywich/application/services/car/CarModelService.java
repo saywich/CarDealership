@@ -52,7 +52,7 @@ public class CarModelService implements ICarModelService {
 
     @Override
     public GetCarModelDetails.Response getDetails(GetCarModelDetails.Request request) {
-        CarModel model = repository.query(new UUID[]{ request.modelId() }).getFirst();
+        CarModel model = repository.query(new UUID[]{ request.modelId() }).get(0);
         AvailableOptions options = repository.getAvailableOptionsForModel(model.getModelId());
 
         return new GetCarModelDetails.Response(model, options);

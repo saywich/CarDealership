@@ -31,7 +31,7 @@ public class InStockOrderService implements IInStockOrderService {
     @Override
     public AcceptOrder.Response acceptOrder(AcceptOrder.Request request) {
         CarInStockOrder order = repository.query(
-            new UUID[] { request.orderId() }).getFirst();
+            new UUID[] { request.orderId() }).get(0);
 
         order.accept();
 
@@ -41,7 +41,7 @@ public class InStockOrderService implements IInStockOrderService {
     @Override
     public WaitForPaymentOrder.Response waitForPaymentOrder(WaitForPaymentOrder.Request request) {
         CarInStockOrder order = repository.query(
-            new UUID[] { request.orderId() }).getFirst();
+            new UUID[] { request.orderId() }).get(0);
 
         order.waitForPayment();
 
@@ -51,7 +51,7 @@ public class InStockOrderService implements IInStockOrderService {
     @Override
     public PayOrder.Response payOrder(PayOrder.Request request) {
         CarInStockOrder order = repository.query(
-            new UUID[] { request.orderId() }).getFirst();
+            new UUID[] { request.orderId() }).get(0);
 
         order.pay();
 
@@ -61,7 +61,7 @@ public class InStockOrderService implements IInStockOrderService {
     @Override
     public CompleteOrder.Response completeOrder(CompleteOrder.Request request) {
         CarInStockOrder order = repository.query(
-            new UUID[] { request.orderId() }).getFirst();
+            new UUID[] { request.orderId() }).get(0);
 
         order.complete();
 
@@ -71,7 +71,7 @@ public class InStockOrderService implements IInStockOrderService {
     @Override
     public CancelOrder.Response cancelOrder(CancelOrder.Request request) {
         CarInStockOrder order = repository.query(
-            new UUID[] { request.orderId() }).getFirst();
+            new UUID[] { request.orderId() }).get(0);
 
         order.cancel();
 
