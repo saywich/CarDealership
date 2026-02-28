@@ -35,13 +35,13 @@ public class CarModel {
 
     public Price totalPrice() {
         return new Price(
-            basePrice.value() +
-            engine.priceDifference().value() +
-            transmission.priceDifference().value() +
-            bodyType.priceDifference().value() +
-            rims.priceDifference().value() +
-            interior.priceDifference().value() +
-            color.priceDifference().value()
+            basePrice.value()
+            .add(engine.priceDifference().value())
+            .add(transmission.priceDifference().value())
+            .add(bodyType.priceDifference().value())
+            .add(rims.priceDifference().value())
+            .add(interior.priceDifference().value())
+            .add(color.priceDifference().value())
         );
     }
 

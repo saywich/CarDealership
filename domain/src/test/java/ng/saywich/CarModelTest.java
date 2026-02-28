@@ -12,6 +12,7 @@ import ng.saywich.domain.value.Price;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +25,7 @@ public class CarModelTest {
         CarModel model = builder.build();
 
         Assertions.assertEquals(FuelType.PETROL, model.getEngine().carPart().fuelType());
-        Assertions.assertEquals(new Price(500_000), model.getBasePrice());
+        Assertions.assertEquals(new Price(new BigDecimal(500_000)), model.getBasePrice());
     }
 
     @Test void carModelPartialBuilderThrowsTest() {
@@ -33,7 +34,7 @@ public class CarModelTest {
         builder.modelId(UUID.randomUUID());
         builder.rims(new CarOption<Rims>(
             new Rims(UUID.randomUUID(), "bbs", 21),
-            new Price(100_000))
+            new Price(new BigDecimal(100_000)))
         );
 
         Assertions.assertThrows(DomainValidationException.class, builder::build);
@@ -80,6 +81,9 @@ public class CarModelTest {
 
         CarModel model = configurer.configure();
 
-        Assertions.assertEquals(new Price(model.getBasePrice().value() + 200_000), model.totalPrice());
+        Assertions.assertEquals(
+            new Price(model.getBasePrice().value().add(new BigDecimal(200_000))),
+            model.totalPrice()
+        );
     }
 }

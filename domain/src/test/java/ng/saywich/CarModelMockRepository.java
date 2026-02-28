@@ -12,6 +12,7 @@ import ng.saywich.domain.value.HorsePower;
 import ng.saywich.domain.value.Price;
 import ng.saywich.domain.value.Volume;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +23,8 @@ public class CarModelMockRepository {
         builder.modelId(UUID.randomUUID());
         builder.brand(new CarBrand(UUID.randomUUID(), "LADA"));
         builder.name("Priora");
-        builder.bodyType(new CarOption<BodyType>(BodyType.SEDAN, new Price(0)));
+        builder.bodyType(new CarOption<BodyType>(
+            BodyType.SEDAN, new Price(new BigDecimal(0))));
         builder.engine(new CarOption<Engine>(
                 new Engine(
                     UUID.randomUUID(),
@@ -31,7 +33,7 @@ public class CarModelMockRepository {
                     new Volume(1.6),
                     FuelType.PETROL
                 ),
-                new Price(0)
+                new Price(new BigDecimal(0))
             )
         );
         builder.transmission(
@@ -43,28 +45,28 @@ public class CarModelMockRepository {
                     TransmissionType.MANUAL,
                     DriveTrain.FRONT
                 ),
-                new Price(0)
+                new Price(new BigDecimal(0))
             )
         );
         builder.rims(
             new CarOption<Rims>(
                 new Rims(UUID.randomUUID(), "shtampovki", 14),
-                new Price(0)
+                new Price(new BigDecimal(0))
             )
         );
         builder.interior(
             new CarOption<Interior>(
                 new Interior(UUID.randomUUID(), "tryapka"),
-                new Price(0)
+                new Price(new BigDecimal(0))
             )
         );
         builder.color(
             new CarOption<Color>(
                 new Color(UUID.randomUUID(), "backlazhan", 0xFFFFFF),
-                new Price(0)
+                new Price(new BigDecimal(0))
             )
         );
-        builder.basePrice(new Price(500_000));
+        builder.basePrice(new Price(new BigDecimal(500_000)));
 
         return builder.build();
     }
@@ -79,7 +81,7 @@ public class CarModelMockRepository {
                     new Volume(1.6),
                     FuelType.PETROL
                 ),
-                new Price(0)
+                new Price(new BigDecimal(0))
             ),
             new CarOption<Engine>(
                 new Engine(
@@ -89,7 +91,7 @@ public class CarModelMockRepository {
                     new Volume(3.0),
                     FuelType.PETROL
                 ),
-                new Price(100_000)
+                new Price(new BigDecimal(100_000))
             ),
             new CarOption<Engine>(
                 new Engine(
@@ -99,7 +101,7 @@ public class CarModelMockRepository {
                     new Volume(5.0),
                     FuelType.PETROL
                 ),
-                new Price(500_000)
+                new Price(new BigDecimal(500_000))
             )
         );
     }
@@ -114,7 +116,7 @@ public class CarModelMockRepository {
                     TransmissionType.MANUAL,
                     DriveTrain.FRONT
                 ),
-                new Price(0)
+                new Price(new BigDecimal(0))
             ),
             new CarOption<Transmission>(
                 new Transmission(
@@ -124,7 +126,7 @@ public class CarModelMockRepository {
                     TransmissionType.AUTOMATIC,
                     DriveTrain.ALL
                 ),
-                new Price(100_000)
+                new Price(new BigDecimal(100_000))
             ),
             new CarOption<Transmission>(
                 new Transmission(
@@ -133,7 +135,7 @@ public class CarModelMockRepository {
                     6,
                     TransmissionType.AUTOMATIC,
                     DriveTrain.ALL
-                ), new Price(250_000)
+                ), new Price(new BigDecimal(250_000))
             )
         );
     }
@@ -141,7 +143,7 @@ public class CarModelMockRepository {
     public List<CarOption<BodyType>> getAvailableBodyTypes() {
         return List.of(
             new CarOption<BodyType>(
-                BodyType.SEDAN, new Price(0))
+                BodyType.SEDAN, new Price(new BigDecimal(0)))
         );
     }
 
@@ -149,7 +151,7 @@ public class CarModelMockRepository {
         return List.of(
             new CarOption<Rims>(
                 new Rims(UUID.randomUUID(), "shtampovki", 14),
-                new Price(0)
+                new Price(new BigDecimal(0))
             )
         );
     }
@@ -158,7 +160,7 @@ public class CarModelMockRepository {
         return List.of(
             new CarOption<Interior>(
                 new Interior(UUID.randomUUID(), "tryapka"),
-                new Price(0)
+                new Price(new BigDecimal(0))
             )
         );
     }
@@ -167,7 +169,7 @@ public class CarModelMockRepository {
         return List.of(
             new CarOption<Color>(
                 new Color( UUID.randomUUID(),"backlajan", 0xFFFFFF),
-                new Price(0)
+                new Price(new BigDecimal(0))
             )
         );
     }
