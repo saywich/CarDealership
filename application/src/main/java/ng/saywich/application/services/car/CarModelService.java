@@ -5,9 +5,12 @@ import ng.saywich.application.abstractions.car.ICarModelRepository;
 import ng.saywich.application.contracts.car.ICarModelService;
 import ng.saywich.application.contracts.car.operations.*;
 import ng.saywich.domain.car.AvailableOptions;
+import ng.saywich.domain.car.Car;
 import ng.saywich.domain.car.CarModel;
 import ng.saywich.domain.car.CarModelConfigurer;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -65,7 +68,10 @@ public class CarModelService implements ICarModelService {
 
     @Override
     public FilterCarModels.Response queryWithFilter(FilterCarModels.Request request) {
-        return new FilterCarModels.Response(repository.queryWithFilter(request.filter()));
+        List<CarModel> filteredModels = request.criteria()
+            .meetCriteria(repository.query(new UUID[]{}));
+
+        return new FilterCarModels.Response(filteredModels);
     }
 
     @Override
