@@ -2,6 +2,7 @@ package ng.saywich.presentation.mappers.parts.options;
 
 import ng.saywich.domain.car.CarOption;
 import ng.saywich.domain.car.parts.Interior;
+import ng.saywich.domain.value.Price;
 import ng.saywich.presentation.dtos.parts.CarOptionDto;
 import ng.saywich.presentation.dtos.parts.InteriorDto;
 import ng.saywich.presentation.mappers.parts.InteriorDtoMapper;
@@ -12,15 +13,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public abstract class InteriorOptionDtoMapper {
-
     @Autowired
     protected InteriorDtoMapper mapper;
 
-    @Mapping(target = "carPart", expression = "java(mapper.toInterior(dto.carPart()))")
-    @Mapping(target = "priceDifference", expression = "java(new Price(dto.priceDifference()))")
-    public abstract CarOption<Interior> toOption(CarOptionDto<InteriorDto> dto);
+    public CarOption<Interior> toOption(CarOptionDto<InteriorDto> dto) {
+        return new CarOption<Interior>(
+            dto.optionId(),
+            mapper.toInterior(dto.carPart()),
+            new Price(dto.priceDifference())
+        );
+    }
 
-    @Mapping(target = "carPart", expression = "java(mapper.toInteriorDto(option.carPart()))")
-    @Mapping(target = "priceDifference", expression = "java(option.priceDifference().value())")
-    public abstract CarOptionDto<InteriorDto> toOptionDto(CarOption<Interior> option);
+    public CarOptionDto<InteriorDto> toOptionDto(CarOption<Interior> option) {
+        return new CarOptionDto<InteriorDto>(
+            option.optionId(),
+            mapper.toInteriorDto(option.carPart()),
+            option.priceDifference().value()
+        );
+    }
 }

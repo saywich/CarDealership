@@ -2,6 +2,7 @@ package ng.saywich.presentation.mappers.parts.options;
 
 import ng.saywich.domain.car.CarOption;
 import ng.saywich.domain.car.parts.Color;
+import ng.saywich.domain.value.Price;
 import ng.saywich.presentation.dtos.parts.CarOptionDto;
 import ng.saywich.presentation.dtos.parts.ColorDto;
 import ng.saywich.presentation.mappers.parts.ColorDtoMapper;
@@ -16,11 +17,19 @@ public abstract class ColorOptionDtoMapper {
     @Autowired
     protected ColorDtoMapper mapper;
 
-    @Mapping(target = "carPart", expression = "java(mapper.toColor(dto.carPart()))")
-    @Mapping(target = "priceDifference", expression = "java(new Price(dto.priceDifference()))")
-    public abstract CarOption<Color> toOption(CarOptionDto<ColorDto> dto);
+    public CarOption<Color> toOption(CarOptionDto<ColorDto> dto) {
+        return new CarOption<Color>(
+            dto.optionId(),
+            mapper.toColor(dto.carPart()),
+            new Price(dto.priceDifference())
+        );
+    }
 
-    @Mapping(target = "carPart", expression = "java(mapper.toColorDto(option.carPart()))")
-    @Mapping(target = "priceDifference", expression = "java(option.priceDifference().value())")
-    public abstract CarOptionDto<ColorDto> toOptionDto(CarOption<Color> option);
+    public CarOptionDto<ColorDto> toOptionDto(CarOption<Color> option) {
+        return new CarOptionDto<ColorDto>(
+            option.optionId(),
+            mapper.toColorDto(option.carPart()),
+            option.priceDifference().value()
+        );
+    }
 }

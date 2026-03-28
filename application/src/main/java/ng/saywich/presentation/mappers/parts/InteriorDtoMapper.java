@@ -5,6 +5,8 @@ import ng.saywich.presentation.dtos.parts.InteriorDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
+import java.math.BigDecimal;
+
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface InteriorDtoMapper {
     Interior toInterior(InteriorDto dto);
