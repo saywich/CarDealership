@@ -19,29 +19,19 @@ public class CarModel {
 
     @NonNull CarBrand brand;
 
-    @NonNull CarOption<Engine> engine;
-
-    @NonNull CarOption<Transmission> transmission;
-
-    @NonNull CarOption<BodyType> bodyType;
-
-    @NonNull CarOption<Rims> rims;
-
-    @NonNull CarOption<Interior> interior;
-
-    @NonNull CarOption<Color> color;
+    @NonNull OptionSet optionSet;
 
     @NonNull Price basePrice;
 
     public Price totalPrice() {
         return new Price(
             basePrice.value()
-            .add(engine.priceDifference().value())
-            .add(transmission.priceDifference().value())
-            .add(bodyType.priceDifference().value())
-            .add(rims.priceDifference().value())
-            .add(interior.priceDifference().value())
-            .add(color.priceDifference().value())
+            .add(optionSet.engine().priceDifference().value())
+            .add(optionSet.transmission().priceDifference().value())
+            .add(optionSet.bodyType().priceDifference().value())
+            .add(optionSet.rims().priceDifference().value())
+            .add(optionSet.interior().priceDifference().value())
+            .add(optionSet.color().priceDifference().value())
         );
     }
 
@@ -59,12 +49,7 @@ public class CarModel {
                 requireNotNull(this.modelId),
                 requireNotNull(this.name),
                 requireNotNull(this.brand),
-                requireNotNull(this.engine),
-                requireNotNull(this.transmission),
-                requireNotNull(this.bodyType),
-                requireNotNull(this.rims),
-                requireNotNull(this.interior),
-                requireNotNull(this.color),
+                requireNotNull(this.optionSet),
                 requireNotNull(this.basePrice)
             );
         }

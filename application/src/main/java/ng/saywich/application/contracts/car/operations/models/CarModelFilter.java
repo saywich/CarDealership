@@ -7,25 +7,19 @@ import ng.saywich.domain.car.enums.BodyType;
 import ng.saywich.domain.car.enums.DriveTrain;
 import ng.saywich.domain.car.enums.FuelType;
 import ng.saywich.domain.car.enums.TransmissionType;
+import ng.saywich.domain.value.HorsePower;
 import ng.saywich.domain.value.Price;
+import ng.saywich.domain.value.Volume;
 
 @Builder
-public class CarModelFilter {
-    Range<Price> priceRange;
-
-    CarFullName carFullName;
-
-    BodyType bodyType;
-
-    FuelType fuelType;
-
-    Range<Integer> powerRange;
-
-    Range<Integer> volumeRange;
-
-    TransmissionType transmissionType;
-
-    DriveTrain driveTrain;
-
-    String colorName;
-}
+public record CarModelFilter(
+    Range<Price> priceRange,
+    CarFullName carFullName,
+    BodyType bodyType,
+    FuelType fuelType,
+    Range<HorsePower> powerRange,
+    Range<Volume> volumeRange,
+    TransmissionType transmissionType,
+    DriveTrain driveTrain,
+    String colorName
+) {}

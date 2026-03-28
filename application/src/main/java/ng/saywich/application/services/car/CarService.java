@@ -6,9 +6,12 @@ import ng.saywich.application.contracts.car.ICarService;
 import ng.saywich.application.contracts.car.operations.*;
 import ng.saywich.domain.car.Car;
 import ng.saywich.domain.car.CarModel;
+import ng.saywich.domain.car.parts.OptionSet;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 @AllArgsConstructor
 public class CarService implements ICarService {
     private ICarRepository repository;
@@ -16,14 +19,20 @@ public class CarService implements ICarService {
     @Override
     public CreateCar.Response create(CreateCar.Request request) {
         CarModel.CarModelBuilder builder = CarModel.builder();
+        OptionSet.OptionSetBuilder optionSetBuilder = OptionSet.builder();
 
         builder.modelId(UUID.randomUUID());
         builder.name(request.name());
-        builder.engine(request.engine());
-        builder.transmission(request.transmission());
-        builder.rims(request.rims());
-        builder.interior(request.interior());
-        builder.color(request.color());
+
+        optionSetBuilder.optionSetId(UUID.randomUUID());
+        optionSetBuilder.engine(request.engine());
+        optionSetBuilder.transmission(request.transmission());
+        optionSetBuilder.rims(request.rims());
+        optionSetBuilder.interior(request.interior());
+        optionSetBuilder.bodyType(request.bodyType());
+        optionSetBuilder.color(request.color());
+        builder.optionSet(optionSetBuilder.build());
+
         builder.brand(request.brand());
         builder.basePrice(request.basePrice());
 
@@ -38,13 +47,16 @@ public class CarService implements ICarService {
     @Override
     public UpdateCar.Response update(UpdateCar.Request request) {
         repository.updateCar(request.car());
-        return new UpdateCar.Response();
+
+        return new UpdateCar.Response(request.car());
     }
 
     @Override
     public DeleteCar.Response delete(DeleteCar.Request request) {
+        Car car = repository.query(new UUID[]{ request.carId() }).get(0);
         repository.deleteCar(request.carId());
-        return new DeleteCar.Response();
+
+        return new DeleteCar.Response(car);
     }
 
     @Override

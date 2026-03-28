@@ -1,5 +1,7 @@
 plugins {
     id("java")
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dm)
 }
 
 repositories {
@@ -9,6 +11,8 @@ repositories {
 dependencies {
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
+
+    implementation("org.springframework.boot:spring-boot-starter")
 
     implementation(project(":domain"))
 }

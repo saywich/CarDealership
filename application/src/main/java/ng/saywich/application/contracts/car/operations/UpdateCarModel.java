@@ -9,5 +9,5 @@ public final class UpdateCarModel {
 
     public record Request(CarModel model) {}
 
-    public record Response() {}
+    public record Response(CarModel model) {}
 }

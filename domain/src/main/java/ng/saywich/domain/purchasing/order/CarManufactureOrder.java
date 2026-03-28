@@ -3,6 +3,7 @@ package ng.saywich.domain.purchasing.order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ng.saywich.domain.car.CarModel;
+import ng.saywich.domain.car.parts.OptionSet;
 import ng.saywich.domain.exceptions.IncompatibleOrderStateException;
 import ng.saywich.domain.purchasing.Customer;
 import ng.saywich.domain.purchasing.Manager;
@@ -10,12 +11,11 @@ import ng.saywich.domain.purchasing.order.states.*;
 
 import java.util.UUID;
 
+@Getter
 @AllArgsConstructor
 public class CarManufactureOrder {
-    @Getter
     UUID orderId;
 
-    @Getter
     IOrderState orderState;
 
     private Manager manager;

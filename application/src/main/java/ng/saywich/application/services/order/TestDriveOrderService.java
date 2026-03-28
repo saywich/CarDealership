@@ -5,9 +5,11 @@ import ng.saywich.application.abstractions.order.ITestDriveOrderRepository;
 import ng.saywich.application.contracts.order.ITestDriveOrderService;
 import ng.saywich.application.contracts.order.operations.CreateTestDriveOrder;
 import ng.saywich.domain.purchasing.order.TestDriveOrder;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 @AllArgsConstructor
 public class TestDriveOrderService implements ITestDriveOrderService {
     ITestDriveOrderRepository repository;

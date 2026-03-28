@@ -10,8 +10,6 @@ public final class CreateManufactureOrder {
     private CreateManufactureOrder() {}
 
     public record Request(
-        OrderState state,
-        Manager manager,
         Customer customer,
         CarModel carModel
     ) {}

@@ -7,19 +7,22 @@ import ng.saywich.domain.car.enums.BodyType;
 import ng.saywich.domain.car.parts.*;
 import ng.saywich.domain.value.Price;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
 public final class CreateCarModel {
     private CreateCarModel() {}
 
     public record Request(
         String name,
-        CarBrand brand,
-        CarOption<Engine> engine,
-        CarOption<Transmission> transmission,
-        CarOption<BodyType> bodyType,
-        CarOption<Rims> rims,
-        CarOption<Interior> interior,
-        CarOption<Color> color,
-        Price basePrice
+        UUID brandId,
+        UUID engineId,
+        UUID transmissionId,
+        BodyType bodyType,
+        UUID rimsId,
+        UUID interiorId,
+        UUID colorId,
+        BigDecimal basePrice
     ) {}
 
     public record Response(CarModel model) {}

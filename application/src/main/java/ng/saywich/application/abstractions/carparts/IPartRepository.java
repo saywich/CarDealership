@@ -10,11 +10,7 @@ public interface IPartRepository<T> {
 
     public List<T> query(UUID[] partIds);
 
-    public List<T> queryForModel(UUID modelId);
+    public void update(T part);
 
-    public void update(T engine);
-
-    public void delete(UUID partId);
-
-    public void linkToModel(UUID modelId, UUID partId, Price priceDifference);
+    public void delete(T part);
 }

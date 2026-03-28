@@ -10,7 +10,6 @@ public final class CreateInStockOrder {
     private CreateInStockOrder() {}
 
     public record Request(
-        Manager manager,
         Customer customer,
         Car car
     ) {}

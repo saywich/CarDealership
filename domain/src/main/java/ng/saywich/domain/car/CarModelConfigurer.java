@@ -13,7 +13,7 @@ public class CarModelConfigurer {
     @Getter
     AvailableOptions availableOptions;
 
-    private final CarModel.CarModelBuilder modelBuilder;
+    private final OptionSet.OptionSetBuilder optionSetBuilder;
 
     public CarModelConfigurer setEngine(
         CarOption<Engine> engine
@@ -23,7 +23,7 @@ public class CarModelConfigurer {
                 "Engine is not compatible with this model.");
         }
 
-        modelBuilder.engine(engine);
+        optionSetBuilder.engine(engine);
 
         return this;
     }
@@ -37,7 +37,7 @@ public class CarModelConfigurer {
             );
         }
 
-        modelBuilder.transmission(transmission);
+        optionSetBuilder.transmission(transmission);
 
         return this;
     }
@@ -51,7 +51,7 @@ public class CarModelConfigurer {
             );
         }
 
-        modelBuilder.bodyType(bodyType);
+        optionSetBuilder.bodyType(bodyType);
 
         return this;
     }
@@ -65,7 +65,7 @@ public class CarModelConfigurer {
             );
         }
 
-        modelBuilder.rims(rims);
+        optionSetBuilder.rims(rims);
 
         return this;
     }
@@ -79,7 +79,7 @@ public class CarModelConfigurer {
             );
         }
 
-        modelBuilder.interior(interior);
+        optionSetBuilder.interior(interior);
 
         return this;
     }
@@ -93,12 +93,12 @@ public class CarModelConfigurer {
             );
         }
 
-        modelBuilder.color(color);
+        optionSetBuilder.color(color);
 
         return this;
     }
 
-    public CarModel configure() {
-        return modelBuilder.build();
+    public OptionSet configure() {
+        return optionSetBuilder.build();
     }
 }

@@ -10,12 +10,11 @@ import ng.saywich.domain.purchasing.order.states.*;
 
 import java.util.UUID;
 
+@Getter
 @AllArgsConstructor
 public class CarInStockOrder {
-    @Getter
     UUID orderId;
 
-    @Getter
     IOrderState orderState;
 
     private Manager manager;

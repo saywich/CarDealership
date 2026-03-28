@@ -1,0 +1,5 @@
+FROM gradle:jdk17-ubi10
+
+WORKDIR /app
+
+ENTRYPOINT [ "./gradlew", ":presentation:bootRun" ]

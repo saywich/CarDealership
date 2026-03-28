@@ -13,9 +13,12 @@ public class TestDriveOrder {
     @Getter
     UUID orderId;
 
+    @Getter
     Car requestedCar;
 
+    @Getter
     Customer customer;
 
+    @Getter
     Date startDate;
 }

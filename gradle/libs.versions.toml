@@ -1,7 +1,29 @@
 [versions]
 junit-jupiter = "5.12.1"
 lombok = "1.18.42"
+spring-boot = "4.0.3"
+spring-dm = "1.1.7"
+mapstruct = "1.6.3"
+mapstruct-processor = "1.6.3"
+lombok-mapstruct-binding = "0.2.0"
+postgresql = "42.7.10"
+springdoc = "3.0.2"
+testcontainers = "1.19.8"
+testcontainerspg = "1.19.8"
+liquibase = "5.0.2"
 
 [libraries]
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct-processor" }
+lombok-mapstruct-binding = { module = "org.projectlombok:lombok-mapstruct-binding", version.ref = "lombok-mapstruct-binding" }
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+testcontainers = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
+testcontainerspg = { module = "org.testcontainers:postgresql", version.ref = "testcontainerspg" }
+liquibase = { module = "org.liquibase:liquibase-core", version.ref = "liquibase" }
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dm = { id = "io.spring.dependency-management", version.ref = "spring-dm" }

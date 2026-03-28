@@ -22,7 +22,3 @@ tasks.named<Test>("test") {
     testLogging.showStandardStreams = true
 }
 
-tasks.register<Test>("integrationTest") {
-    useJUnitPlatform()
-    testLogging.showStandardStreams = true
-}

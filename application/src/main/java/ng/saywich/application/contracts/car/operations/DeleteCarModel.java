@@ -1,5 +1,7 @@
 package ng.saywich.application.contracts.car.operations;
 
+import ng.saywich.domain.car.CarModel;
+
 import java.util.UUID;
 
 public final class DeleteCarModel {
@@ -9,5 +11,5 @@ public final class DeleteCarModel {
         UUID modelId
     ) {}
 
-    public record Response() {}
+    public record Response(CarModel model) {}
 }
