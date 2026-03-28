@@ -1,5 +1,6 @@
 rootProject.name = "JavaLab"
 include("domain")
-include("application")
+include("core")
 include("infrastructure:persistence")
-include("presentation")
+include("application")
+include("integrationTests")

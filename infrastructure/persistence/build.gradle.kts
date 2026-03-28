@@ -14,7 +14,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-test")
     implementation(project(":domain"))
-    implementation(project(":application"))
+    implementation(project(":core"))
 
     testImplementation(libs.mapstruct)
     testImplementation(libs.junit.jupiter)
