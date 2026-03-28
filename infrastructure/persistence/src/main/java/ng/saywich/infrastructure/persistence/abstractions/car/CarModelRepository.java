@@ -11,6 +11,7 @@ import ng.saywich.infrastructure.persistence.mappers.cars.CarModelMapper;
 import ng.saywich.infrastructure.persistence.models.cars.CarModelDao;
 import ng.saywich.infrastructure.persistence.specifications.CarModelSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
@@ -44,8 +45,28 @@ public class CarModelRepository implements ICarModelRepository {
     }
 
     @Override
-    public List<CarModel> queryWithFilter(CarModelFilter filter) {
-        return carModelDaoRepository.findAll(new CarModelSpecification(filter))
+    public List<CarModel> queryPage(UUID[] carModelIds, int pageSize, int page) {
+        int clampedPageSize = Math.clamp(pageSize, 1, 100);
+
+        List<CarModelDao> modelDaoList = carModelIds.length == 0
+            ? carModelDaoRepository.findAll(Pageable.ofSize(clampedPageSize).withPage(page)).toList()
+            : carModelDaoRepository.findAllById(Arrays.stream(carModelIds).toList());
+
+        return modelDaoList.stream()
+            .map((model) -> {
+                return carModelMapper.toCarModel(model);
+            })
+            .toList();
+    }
+
+    @Override
+    public List<CarModel> queryPageWithFilter(CarModelFilter filter, int pageSize, int page) {
+        int clampedPageSize = Math.clamp(pageSize, 1, 100);
+
+        return carModelDaoRepository.findAll(
+                new CarModelSpecification(filter),
+                Pageable.ofSize(clampedPageSize).withPage(page)
+            )
             .stream()
             .map(cm -> carModelMapper.toCarModel(cm))
             .toList();

@@ -6,6 +6,7 @@ import ng.saywich.domain.car.CarOption;
 import ng.saywich.domain.car.enums.BodyType;
 import ng.saywich.domain.car.parts.*;
 import ng.saywich.domain.value.Price;
+import ng.saywich.presentation.dtos.cars.CarDto;
 
 public final class CreateCar {
     private CreateCar() {}
@@ -23,5 +24,5 @@ public final class CreateCar {
         Price basePrice
     ) {}
 
-    public record Response(Car car) {}
+    public record Response(CarDto car) {}
 }

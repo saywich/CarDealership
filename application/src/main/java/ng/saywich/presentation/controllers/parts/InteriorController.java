@@ -9,6 +9,7 @@ import ng.saywich.domain.car.parts.Interior;
 import ng.saywich.presentation.dtos.parts.InteriorDto;
 import ng.saywich.presentation.mappers.parts.InteriorDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,31 +26,37 @@ public class InteriorController {
     private IPartService<Interior> service;
 
     @GetMapping("/")
-    public List<InteriorDto> getInteriors() {
-        return service.query(new QueryParts.Request<>(new UUID[0]))
+    public ResponseEntity<List<InteriorDto>> getInteriors() {
+        List<InteriorDto> interiorDtoList = service.query(new QueryParts.Request<>(new UUID[0]))
             .parts().stream()
             .map(interiorDtoMapper::toInteriorDto)
             .toList();
+
+        if (interiorDtoList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(interiorDtoList);
     }
 
     @PostMapping("/")
-    public InteriorDto createInterior(@RequestBody InteriorDto dto) {
-        return interiorDtoMapper.toInteriorDto(
+    public ResponseEntity<InteriorDto> createInterior(@RequestBody InteriorDto dto) {
+        return ResponseEntity.ok(interiorDtoMapper.toInteriorDto(
             service.add(new AddPart.Request<>(interiorDtoMapper.toInterior(dto)))
-                .part());
+                .part()));
     }
 
     @PutMapping("/")
-    public InteriorDto updateInterior(@RequestBody InteriorDto dto) {
-        return interiorDtoMapper.toInteriorDto(
+    public ResponseEntity<InteriorDto> updateInterior(@RequestBody InteriorDto dto) {
+        return ResponseEntity.ok(interiorDtoMapper.toInteriorDto(
             service.update(new UpdatePart.Request<>(interiorDtoMapper.toInterior(dto)))
-                .part());
+                .part()));
     }
 
     @DeleteMapping("/")
-    public InteriorDto deleteInterior(@RequestBody InteriorDto dto) {
-        return interiorDtoMapper.toInteriorDto(
+    public ResponseEntity<InteriorDto> deleteInterior(@RequestBody InteriorDto dto) {
+        return ResponseEntity.ok(interiorDtoMapper.toInteriorDto(
             service.delete(new DeletePart.Request<>(interiorDtoMapper.toInterior(dto)))
-                .part());
+                .part()));
     }
 }

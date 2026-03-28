@@ -9,6 +9,7 @@ import ng.saywich.domain.car.parts.Rims;
 import ng.saywich.presentation.dtos.parts.RimsDto;
 import ng.saywich.presentation.mappers.parts.RimsDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,31 +26,37 @@ public class RimsController {
     private IPartService<Rims> service;
 
     @GetMapping("/")
-    public List<RimsDto> getRims() {
-        return service.query(new QueryParts.Request<>(new UUID[0]))
+    public ResponseEntity<List<RimsDto>> getRims() {
+        List<RimsDto> rimsDtoList = service.query(new QueryParts.Request<>(new UUID[0]))
             .parts().stream()
             .map(rimsDtoMapper::toRimsDto)
             .toList();
+
+        if (rimsDtoList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(rimsDtoList);
     }
 
     @PostMapping("/")
-    public RimsDto createRims(@RequestBody RimsDto dto) {
-        return rimsDtoMapper.toRimsDto(
+    public ResponseEntity<RimsDto> createRims(@RequestBody RimsDto dto) {
+        return ResponseEntity.ok(rimsDtoMapper.toRimsDto(
             service.add(new AddPart.Request<>(rimsDtoMapper.toRims(dto)))
-                .part());
+                .part()));
     }
 
     @PutMapping("/")
-    public RimsDto updateRims(@RequestBody RimsDto dto) {
-        return rimsDtoMapper.toRimsDto(
+    public ResponseEntity<RimsDto> updateRims(@RequestBody RimsDto dto) {
+        return ResponseEntity.ok(rimsDtoMapper.toRimsDto(
             service.update(new UpdatePart.Request<>(rimsDtoMapper.toRims(dto)))
-                .part());
+                .part()));
     }
 
     @DeleteMapping("/")
-    public RimsDto deleteRims(@RequestBody RimsDto dto) {
-        return rimsDtoMapper.toRimsDto(
+    public ResponseEntity<RimsDto> deleteRims(@RequestBody RimsDto dto) {
+        return ResponseEntity.ok(rimsDtoMapper.toRimsDto(
             service.delete(new DeletePart.Request<>(rimsDtoMapper.toRims(dto)))
-                .part());
+                .part()));
     }
 }

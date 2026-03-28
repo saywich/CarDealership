@@ -9,6 +9,7 @@ import ng.saywich.domain.car.parts.Engine;
 import ng.saywich.presentation.dtos.parts.EngineDto;
 import ng.saywich.presentation.mappers.parts.EngineDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,31 +25,37 @@ public class EngineController {
     private IPartService<Engine> service;
 
     @GetMapping("/")
-    public List<EngineDto> getEngines() {
-        return service.query(new QueryParts.Request<>(new UUID[0]))
+    public ResponseEntity<List<EngineDto>> getEngines() {
+        List<EngineDto> engineDtoList = service.query(new QueryParts.Request<>(new UUID[0]))
             .parts().stream()
             .map(engineDtoMapper::toEngineDto)
             .toList();
+
+        if (engineDtoList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(engineDtoList);
     }
 
     @PostMapping("/")
-    public EngineDto createEngine(@RequestBody EngineDto engineDto) {
-        return engineDtoMapper.toEngineDto(
+    public ResponseEntity<EngineDto> createEngine(@RequestBody EngineDto engineDto) {
+        return ResponseEntity.ok(engineDtoMapper.toEngineDto(
             service.add(new AddPart.Request<>(engineDtoMapper.toEngine(engineDto)))
-            .part());
+            .part()));
     }
 
     @PutMapping("/")
-    public EngineDto updateEngine(@RequestBody EngineDto engineDto) {
-        return engineDtoMapper.toEngineDto(
+    public ResponseEntity<EngineDto> updateEngine(@RequestBody EngineDto engineDto) {
+        return ResponseEntity.ok(engineDtoMapper.toEngineDto(
             service.update(new UpdatePart.Request<>(engineDtoMapper.toEngine(engineDto)))
-                .part());
+                .part()));
     }
 
     @DeleteMapping("/")
-    public EngineDto deleteEngine(@RequestBody EngineDto engineDto) {
-        return engineDtoMapper.toEngineDto(
+    public ResponseEntity<EngineDto> deleteEngine(@RequestBody EngineDto engineDto) {
+        return ResponseEntity.ok(engineDtoMapper.toEngineDto(
             service.delete(new DeletePart.Request<>(engineDtoMapper.toEngine(engineDto)))
-                .part());
+                .part()));
     }
 }

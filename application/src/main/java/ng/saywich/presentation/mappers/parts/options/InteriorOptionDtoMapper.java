@@ -7,7 +7,6 @@ import ng.saywich.presentation.dtos.parts.CarOptionDto;
 import ng.saywich.presentation.dtos.parts.InteriorDto;
 import ng.saywich.presentation.mappers.parts.InteriorDtoMapper;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 

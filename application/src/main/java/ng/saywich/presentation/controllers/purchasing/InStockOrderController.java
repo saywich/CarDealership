@@ -1,11 +1,12 @@
 package ng.saywich.presentation.controllers.purchasing;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import ng.saywich.application.contracts.order.IInStockOrderService;
 import ng.saywich.application.contracts.order.operations.*;
-import ng.saywich.domain.exceptions.IncompatibleOrderStateException;
 import ng.saywich.presentation.dtos.purchasing.InStockOrderDto;
 import ng.saywich.presentation.mappers.purchasing.InStockOrderDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,40 +22,50 @@ public class InStockOrderController {
     InStockOrderDtoMapper mapper;
 
     @PostMapping("/")
-    public InStockOrderDto createOrder(@RequestBody CreateInStockOrder.Request request) {
-        return mapper.toOrderDto(service.create(request).order());
+    public ResponseEntity<InStockOrderDto> createOrder(@RequestBody CreateInStockOrder.Request request) {
+        return ResponseEntity.ok(mapper.toOrderDto(service.create(request).order()));
     }
 
     @PostMapping("/accept")
-    public AcceptOrder.Response acceptOrder(@RequestBody AcceptOrder.Request request) {
-        return service.acceptOrder(request);
+    @ApiResponse(responseCode = "200", description = "Order accepted")
+    @ApiResponse(responseCode = "400", description = "Invalid state transition for order")
+    public ResponseEntity<AcceptOrder.Response> acceptOrder(@RequestBody AcceptOrder.Request request) {
+        return ResponseEntity.ok(service.acceptOrder(request));
     }
 
     @PostMapping("/waitForPayment")
-    public WaitForPaymentOrder.Response waitForPaymentOrder(
+    @ApiResponse(responseCode = "200", description = "Order waiting for payment")
+    @ApiResponse(responseCode = "400", description = "Invalid state transition for order")
+    public ResponseEntity<WaitForPaymentOrder.Response> waitForPaymentOrder(
         @RequestBody WaitForPaymentOrder.Request request
     ) {
-        return service.waitForPaymentOrder(request);
+        return ResponseEntity.ok(service.waitForPaymentOrder(request));
     }
 
     @PostMapping("/pay")
-    public PayOrder.Response payOrder(
+    @ApiResponse(responseCode = "200", description = "Order paid")
+    @ApiResponse(responseCode = "400", description = "Invalid state transition for order")
+    public ResponseEntity<PayOrder.Response> payOrder(
         @RequestBody PayOrder.Request request
     ) {
-        return service.payOrder(request);
+        return ResponseEntity.ok(service.payOrder(request));
     }
 
     @PostMapping("/complete")
-    public CompleteOrder.Response completeOrder(
+    @ApiResponse(responseCode = "200", description = "Order completed")
+    @ApiResponse(responseCode = "400", description = "Invalid state transition for order")
+    public ResponseEntity<CompleteOrder.Response> completeOrder(
         @RequestBody CompleteOrder.Request request
     ) {
-        return service.completeOrder(request);
+        return ResponseEntity.ok(service.completeOrder(request));
     }
 
     @PostMapping("/cancel")
-    public CancelOrder.Response cancelOrder(
+    @ApiResponse(responseCode = "200", description = "Order cancelled")
+    @ApiResponse(responseCode = "400", description = "Invalid state transition for order")
+    public ResponseEntity<CancelOrder.Response> cancelOrder(
         @RequestBody CancelOrder.Request request
     ) {
-        return service.cancelOrder(request);
+        return ResponseEntity.ok(service.cancelOrder(request));
     }
 }

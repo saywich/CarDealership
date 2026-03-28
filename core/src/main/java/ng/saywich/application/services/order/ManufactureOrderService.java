@@ -8,6 +8,9 @@ import ng.saywich.application.contracts.order.operations.*;
 import ng.saywich.domain.purchasing.Manager;
 import ng.saywich.domain.purchasing.order.CarManufactureOrder;
 import ng.saywich.domain.purchasing.order.states.PendingOrderState;
+import ng.saywich.application.presentationmappers.cars.CarModelDtoMapper;
+import ng.saywich.application.presentationmappers.purchasing.CustomerDtoMapper;
+import ng.saywich.application.presentationmappers.purchasing.ManufactureOrderDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,15 @@ public class ManufactureOrderService implements IManufactureOrderService {
     @Autowired
     private IManagerRepository managerRepository;
 
+    @Autowired
+    private CustomerDtoMapper customerDtoMapper;
+
+    @Autowired
+    private CarModelDtoMapper carDtoMapper;
+
+    @Autowired
+    private ManufactureOrderDtoMapper orderDtoMapper;
+
     @Override
     public CreateManufactureOrder.Response create(CreateManufactureOrder.Request request) {
         List<Manager> managerList = managerRepository.query(new UUID[0]);
@@ -33,13 +45,13 @@ public class ManufactureOrderService implements IManufactureOrderService {
             new PendingOrderState(),
             managerList.get(RandomGenerator.getDefault()
                 .nextInt(0, managerList.size())),
-            request.customer(),
-            request.carModel()
+            customerDtoMapper.toCustomer(request.customer()),
+            carDtoMapper.toCarModel(request.carModel())
         );
 
         repository.createOrder(order);
 
-        return new CreateManufactureOrder.Response(order);
+        return new CreateManufactureOrder.Response(orderDtoMapper.toOrderDto(order));
     }
 
     @Override

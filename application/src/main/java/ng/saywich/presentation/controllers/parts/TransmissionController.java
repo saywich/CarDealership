@@ -9,6 +9,7 @@ import ng.saywich.domain.car.parts.Transmission;
 import ng.saywich.presentation.dtos.parts.TransmissionDto;
 import ng.saywich.presentation.mappers.parts.TransmissionDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,31 +26,37 @@ public class TransmissionController {
     private IPartService<Transmission> service;
 
     @GetMapping("/")
-    public List<TransmissionDto> getTransmissions() {
-        return service.query(new QueryParts.Request<>(new UUID[0]))
+    public ResponseEntity<List<TransmissionDto>> getTransmissions() {
+        List<TransmissionDto> transmissionDtoList = service.query(new QueryParts.Request<>(new UUID[0]))
             .parts().stream()
             .map(transmissionDtoMapper::toTransmissionDto)
             .toList();
+
+        if (transmissionDtoList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(transmissionDtoList);
     }
 
     @PostMapping("/")
-    public TransmissionDto createTransmission(@RequestBody TransmissionDto dto) {
-        return transmissionDtoMapper.toTransmissionDto(
+    public ResponseEntity<TransmissionDto> createTransmission(@RequestBody TransmissionDto dto) {
+        return ResponseEntity.ok(transmissionDtoMapper.toTransmissionDto(
             service.add(new AddPart.Request<>(transmissionDtoMapper.toTransmission(dto)))
-                .part());
+                .part()));
     }
 
     @PutMapping("/")
-    public TransmissionDto updateTransmission(@RequestBody TransmissionDto dto) {
-        return transmissionDtoMapper.toTransmissionDto(
+    public ResponseEntity<TransmissionDto> updateTransmission(@RequestBody TransmissionDto dto) {
+        return ResponseEntity.ok(transmissionDtoMapper.toTransmissionDto(
             service.update(new UpdatePart.Request<>(transmissionDtoMapper.toTransmission(dto)))
-                .part());
+                .part()));
     }
 
     @DeleteMapping("/")
-    public TransmissionDto deleteTransmission(@RequestBody TransmissionDto dto) {
-        return transmissionDtoMapper.toTransmissionDto(
+    public ResponseEntity<TransmissionDto> deleteTransmission(@RequestBody TransmissionDto dto) {
+        return ResponseEntity.ok(transmissionDtoMapper.toTransmissionDto(
             service.delete(new DeletePart.Request<>(transmissionDtoMapper.toTransmission(dto)))
-                .part());
+                .part()));
     }
 }

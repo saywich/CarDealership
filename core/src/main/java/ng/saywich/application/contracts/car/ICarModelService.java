@@ -13,7 +13,11 @@ public interface ICarModelService {
 
     public QueryCarModels.Response query(QueryCarModels.Request request);
 
-    public FilterCarModels.Response queryWithFilter(FilterCarModels.Request request);
+    public QueryCarModels.Response queryPage(
+        QueryCarModels.Request request, int pageSize, int page);
+
+    public FilterCarModels.Response queryWithFilter(
+        FilterCarModels.Request request, int pageSize, int page);
 
     public ConfigureCarModel.Response configure(ConfigureCarModel.Request request);
 }

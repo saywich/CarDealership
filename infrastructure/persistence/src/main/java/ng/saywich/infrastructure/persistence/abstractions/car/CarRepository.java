@@ -28,6 +28,11 @@ public class CarRepository implements ICarRepository {
     }
 
     @Override
+    public List<Car> queryPage(UUID[] carIds, int pageSize, int page) {
+        return List.of();
+    }
+
+    @Override
     public void createCar(Car car) {
         carDaoRepository.save(mapper.toCarDao(car));
     }

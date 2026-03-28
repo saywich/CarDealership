@@ -10,7 +10,8 @@ import ng.saywich.application.contracts.car.operations.*;
 import ng.saywich.domain.car.*;
 import ng.saywich.domain.car.parts.*;
 import ng.saywich.domain.value.Price;
-import org.springframework.beans.factory.annotation.Autowired;
+import ng.saywich.application.presentationmappers.cars.CarModelDtoMapper;
+import ng.saywich.application.presentationmappers.cars.CarModelFilterDtoMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public class CarModelService implements ICarModelService {
     private IPartRepository<Rims> rimsRepository;
     private IPartRepository<Interior> interiorRepository;
     private IPartRepository<Color> colorRepository;
+    private CarModelDtoMapper carModelMapper;
+    private CarModelFilterDtoMapper filterMapper;
 
     @Override
     public CreateCarModel.Response create(CreateCarModel.Request request) {
@@ -78,12 +81,12 @@ public class CarModelService implements ICarModelService {
 
         repository.createCarModel(model);
 
-        return new CreateCarModel.Response(model);
+        return new CreateCarModel.Response(carModelMapper.toCarModelDto(model));
     }
 
     @Override
     public UpdateCarModel.Response update(UpdateCarModel.Request request) {
-        repository.updateCarModel(request.model());
+        repository.updateCarModel(carModelMapper.toCarModel(request.model()));
 
         return new UpdateCarModel.Response(request.model());
     }
@@ -94,7 +97,7 @@ public class CarModelService implements ICarModelService {
 
         repository.deleteCarModel(request.modelId());
 
-        return new DeleteCarModel.Response(model);
+        return new DeleteCarModel.Response(carModelMapper.toCarModelDto(model));
     }
 
     @Override
@@ -102,19 +105,39 @@ public class CarModelService implements ICarModelService {
         CarModel model = repository.query(new UUID[]{ request.modelId() }).get(0);
         AvailableOptions options = repository.getAvailableOptionsForModel(model.getModelId());
 
-        return new GetCarModelDetails.Response(model, options);
+        return new GetCarModelDetails.Response(carModelMapper.toCarModelDto(model), options);
     }
 
     @Override
     public QueryCarModels.Response query(QueryCarModels.Request request) {
-        return new QueryCarModels.Response(repository.query(request.modelIds()));
+        return new QueryCarModels.Response(
+            repository.query(request.modelIds()).stream()
+                .map(carModelMapper::toCarModelDto)
+                .toList());
     }
 
     @Override
-    public FilterCarModels.Response queryWithFilter(FilterCarModels.Request request) {
-        List<CarModel> filteredModels = repository.queryWithFilter(request.filter());
+    public QueryCarModels.Response queryPage(QueryCarModels.Request request, int pageSize, int page) {
+        int clampedPageSize = Math.clamp(pageSize, 1, 100);
 
-        return new FilterCarModels.Response(filteredModels);
+        return new QueryCarModels.Response(
+            repository.queryPage(new UUID[0], clampedPageSize, page).stream()
+                .map(carModelMapper::toCarModelDto)
+                .toList());
+    }
+
+    @Override
+    public FilterCarModels.Response queryWithFilter(
+        FilterCarModels.Request request,
+        int pageSize,
+        int page
+    ) {
+        List<CarModel> filteredModels =
+            repository.queryPageWithFilter(filterMapper.toFilter(request.filter()), pageSize, page);
+
+        return new FilterCarModels.Response(filteredModels.stream()
+            .map(carModelMapper::toCarModelDto)
+            .toList());
     }
 
     @Override

@@ -5,9 +5,7 @@ import ng.saywich.domain.car.parts.Color;
 import ng.saywich.domain.value.Price;
 import ng.saywich.presentation.dtos.parts.CarOptionDto;
 import ng.saywich.presentation.dtos.parts.ColorDto;
-import ng.saywich.presentation.mappers.parts.ColorDtoMapper;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -9,6 +9,7 @@ import ng.saywich.domain.car.parts.Color;
 import ng.saywich.presentation.dtos.parts.ColorDto;
 import ng.saywich.presentation.mappers.parts.ColorDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,31 +25,37 @@ public class ColorController {
     private IPartService<Color> service;
 
     @GetMapping("/")
-    public List<ColorDto> getColors() {
-        return service.query(new QueryParts.Request<>(new UUID[0]))
+    public ResponseEntity<List<ColorDto>> getColors() {
+        List<ColorDto> colorDtoList = service.query(new QueryParts.Request<>(new UUID[0]))
             .parts().stream()
             .map(colorDtoMapper::toColorDto)
             .toList();
+
+        if (colorDtoList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(colorDtoList);
     }
 
     @PostMapping("/")
-    public ColorDto createColor(@RequestBody ColorDto dto) {
-        return colorDtoMapper.toColorDto(
+    public ResponseEntity<ColorDto> createColor(@RequestBody ColorDto dto) {
+        return ResponseEntity.ok(colorDtoMapper.toColorDto(
             service.add(new AddPart.Request<>(colorDtoMapper.toColor(dto)))
-                .part());
+                .part()));
     }
 
     @PutMapping("/")
-    public ColorDto updateColor(@RequestBody ColorDto dto) {
-        return colorDtoMapper.toColorDto(
+    public ResponseEntity<ColorDto> updateColor(@RequestBody ColorDto dto) {
+        return ResponseEntity.ok(colorDtoMapper.toColorDto(
             service.update(new UpdatePart.Request<>(colorDtoMapper.toColor(dto)))
-                .part());
+                .part()));
     }
 
     @DeleteMapping("/")
-    public ColorDto deleteColor(@RequestBody ColorDto dto) {
-        return colorDtoMapper.toColorDto(
+    public ResponseEntity<ColorDto> deleteColor(@RequestBody ColorDto dto) {
+        return ResponseEntity.ok(colorDtoMapper.toColorDto(
             service.delete(new DeletePart.Request<>(colorDtoMapper.toColor(dto)))
-                .part());
+                .part()));
     }
 }

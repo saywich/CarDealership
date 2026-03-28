@@ -2,7 +2,6 @@ package ng.saywich.presentation.mappers.cars;
 
 import ng.saywich.domain.car.parts.OptionSet;
 import ng.saywich.presentation.dtos.parts.OptionSetDto;
-import ng.saywich.presentation.mappers.parts.options.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.springframework.beans.factory.annotation.Autowired;

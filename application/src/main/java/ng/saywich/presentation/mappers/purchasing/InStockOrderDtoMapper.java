@@ -5,7 +5,6 @@ import ng.saywich.domain.purchasing.order.states.*;
 import ng.saywich.infrastructure.persistence.models.purchasing.InStockOrderDao;
 import ng.saywich.presentation.dtos.purchasing.InStockOrderDto;
 import ng.saywich.presentation.mappers.cars.CarDtoMapper;
-import ng.saywich.presentation.mappers.cars.CarModelDtoMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

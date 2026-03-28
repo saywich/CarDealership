@@ -3,15 +3,12 @@ package ng.saywich.presentation.controllers.cars;
 import ng.saywich.application.contracts.car.ICarModelService;
 import ng.saywich.application.contracts.car.ICarService;
 import ng.saywich.application.contracts.car.operations.*;
-import ng.saywich.domain.car.Car;
-import ng.saywich.domain.car.CarModel;
 import ng.saywich.presentation.dtos.cars.CarDto;
-import ng.saywich.presentation.dtos.cars.CarModelDto;
-import ng.saywich.presentation.dtos.cars.CarModelFilterDto;
 import ng.saywich.presentation.mappers.cars.CarDtoMapper;
 import ng.saywich.presentation.mappers.cars.CarModelDtoMapper;
 import ng.saywich.presentation.mappers.cars.CarModelFilterDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,54 +20,35 @@ public class CarController {
     @Autowired
     ICarService carService;
 
-    @Autowired
-    CarDtoMapper carDtoMapper;
-
     @GetMapping("/")
-    public List<CarDto> getCars() {
-        return carService.query(new QueryCars.Request(new UUID[0]))
-            .cars().stream()
-            .map(carDtoMapper::toCarDto)
-            .toList();
+    public ResponseEntity<List<CarDto>> getCars(int page, int pageSize) {
+        List<CarDto> carDtoList = carService.queryPage(
+            new QueryCars.Request(new UUID[0]), pageSize, page).cars();
+
+        if (carDtoList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(carDtoList);
     }
 
     @PostMapping("/")
-    public CarDto createCar(@RequestBody CarDto carDto) {
-        Car car = carDtoMapper.toCar(carDto);
-
-        return carDtoMapper.toCarDto(
-            carService.create(
-                new CreateCar.Request(
-                    car.vinNumber(),
-                    car.model().getName(),
-                    car.model().getBrand(),
-                    car.model().getOptionSet().engine(),
-                    car.model().getOptionSet().transmission(),
-                    car.model().getOptionSet().bodyType(),
-                    car.model().getOptionSet().rims(),
-                    car.model().getOptionSet().interior(),
-                    car.model().getOptionSet().color(),
-                    car.model().getBasePrice()
-                )
-            ).car()
+    public ResponseEntity<CarDto> createCar(@RequestBody CreateCar.Request request) {
+        return ResponseEntity.ok(carService.create(request).car()
         );
     }
 
     @PutMapping("/")
-    public CarDto updateCar(@RequestBody CarDto carDto) {
-        Car car = carDtoMapper.toCar(carDto);
-
-        return carDtoMapper.toCarDto(
-            carService.update(new UpdateCar.Request(car)).car()
+    public ResponseEntity<CarDto> updateCar(@RequestBody CarDto carDto) {
+        return ResponseEntity.ok(
+            carService.update(new UpdateCar.Request(carDto)).car()
         );
     }
 
     @DeleteMapping("/")
-    public CarDto deleteCar(@RequestBody CarDto carDto) {
-        Car car = carDtoMapper.toCar(carDto);
-
-        return carDtoMapper.toCarDto(
-            carService.delete(new DeleteCar.Request(car.carId())).car()
+    public ResponseEntity<CarDto> deleteCar(@RequestBody CarDto carDto) {
+        return ResponseEntity.ok(
+            carService.delete(new DeleteCar.Request(carDto.carId())).car()
         );
     }
 }

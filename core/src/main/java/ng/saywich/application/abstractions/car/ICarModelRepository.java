@@ -10,7 +10,9 @@ import java.util.UUID;
 public interface ICarModelRepository {
     public List<CarModel> query(UUID[] carModelIds);
 
-    public List<CarModel> queryWithFilter(CarModelFilter filter);
+    public List<CarModel> queryPage(UUID[] carModelIds, int pageSize, int page);
+
+    public List<CarModel> queryPageWithFilter(CarModelFilter filter, int pageSize, int page);
 
     public void createCarModel(CarModel modelDto);
 

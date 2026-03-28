@@ -10,6 +10,7 @@ repositories {
 dependencies {
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
+    annotationProcessor(libs.mapstruct)
 
     implementation(libs.spring.context)
 

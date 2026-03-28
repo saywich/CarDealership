@@ -21,7 +21,6 @@ dependencies {
     implementation(libs.springdoc)
     implementation(project(":domain"))
     implementation(project(":core"))
-    implementation(project(":infrastructure:persistence"))
 
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

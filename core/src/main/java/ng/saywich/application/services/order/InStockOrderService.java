@@ -8,6 +8,9 @@ import ng.saywich.application.contracts.order.operations.*;
 import ng.saywich.domain.purchasing.Manager;
 import ng.saywich.domain.purchasing.order.CarInStockOrder;
 import ng.saywich.domain.purchasing.order.states.PendingOrderState;
+import ng.saywich.application.presentationmappers.cars.CarDtoMapper;
+import ng.saywich.application.presentationmappers.purchasing.CustomerDtoMapper;
+import ng.saywich.application.presentationmappers.purchasing.InStockOrderDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,15 @@ public class InStockOrderService implements IInStockOrderService {
     @Autowired
     private IManagerRepository managerRepository;
 
+    @Autowired
+    private CustomerDtoMapper customerDtoMapper;
+
+    @Autowired
+    private CarDtoMapper carDtoMapper;
+
+    @Autowired
+    private InStockOrderDtoMapper orderDtoMapper;
+
     @Override
     public CreateInStockOrder.Response create(CreateInStockOrder.Request request) {
         List<Manager> managerList = managerRepository.query(new UUID[0]);
@@ -33,13 +45,13 @@ public class InStockOrderService implements IInStockOrderService {
             new PendingOrderState(),
             managerList.get(RandomGenerator.getDefault()
                 .nextInt(0, managerList.size())),
-            request.customer(),
-            request.car()
+            customerDtoMapper.toCustomer(request.customer()),
+            carDtoMapper.toCar(request.car())
         );
 
         repository.createOrder(order);
 
-        return new CreateInStockOrder.Response(order);
+        return new CreateInStockOrder.Response(orderDtoMapper.toOrderDto(order));
     }
 
     @Override

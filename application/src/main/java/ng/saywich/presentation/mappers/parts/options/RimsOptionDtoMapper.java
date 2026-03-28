@@ -7,11 +7,8 @@ import ng.saywich.presentation.dtos.parts.CarOptionDto;
 import ng.saywich.presentation.dtos.parts.RimsDto;
 import ng.saywich.presentation.mappers.parts.RimsDtoMapper;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.math.BigDecimal;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public abstract class RimsOptionDtoMapper {

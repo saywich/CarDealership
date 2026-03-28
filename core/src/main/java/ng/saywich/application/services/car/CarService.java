@@ -7,6 +7,7 @@ import ng.saywich.application.contracts.car.operations.*;
 import ng.saywich.domain.car.Car;
 import ng.saywich.domain.car.CarModel;
 import ng.saywich.domain.car.parts.OptionSet;
+import ng.saywich.application.presentationmappers.cars.CarDtoMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CarService implements ICarService {
     private ICarRepository repository;
+    private CarDtoMapper mapper;
 
     @Override
     public CreateCar.Response create(CreateCar.Request request) {
@@ -41,12 +43,12 @@ public class CarService implements ICarService {
 
         repository.createCar(car);
 
-        return new CreateCar.Response(car);
+        return new CreateCar.Response(mapper.toCarDto(car));
     }
 
     @Override
     public UpdateCar.Response update(UpdateCar.Request request) {
-        repository.updateCar(request.car());
+        repository.updateCar(mapper.toCar(request.car()));
 
         return new UpdateCar.Response(request.car());
     }
@@ -56,11 +58,23 @@ public class CarService implements ICarService {
         Car car = repository.query(new UUID[]{ request.carId() }).get(0);
         repository.deleteCar(request.carId());
 
-        return new DeleteCar.Response(car);
+        return new DeleteCar.Response(mapper.toCarDto(car));
     }
 
     @Override
     public QueryCars.Response query(QueryCars.Request request) {
-        return new QueryCars.Response(repository.query(request.carIds()));
+        return new QueryCars.Response(repository.query(request.carIds()).stream()
+            .map(mapper::toCarDto)
+            .toList());
+    }
+
+    @Override
+    public QueryCars.Response queryPage(QueryCars.Request request, int pageSize, int page) {
+        int clampedPageSize = Math.clamp(pageSize, 1, 100);
+
+        return new QueryCars.Response(
+            repository.queryPage(request.carIds(), clampedPageSize, page).stream()
+                .map(mapper::toCarDto)
+                .toList());
     }
 }

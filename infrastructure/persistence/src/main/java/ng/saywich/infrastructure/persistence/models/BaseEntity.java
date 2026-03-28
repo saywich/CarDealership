@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.Date;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @SuperBuilder(toBuilder = true)
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@SQLRestriction("removed = false")
 public abstract class BaseEntity {
     @Id
     @Column(name = "id")
