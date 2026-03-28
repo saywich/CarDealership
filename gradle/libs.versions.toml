@@ -11,6 +11,7 @@ springdoc = "3.0.2"
 testcontainers = "1.19.8"
 testcontainerspg = "1.19.8"
 liquibase = "5.0.2"
+spring-context = "7.0.6"
 
 [libraries]
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
@@ -23,6 +24,7 @@ springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", vers
 testcontainers = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
 testcontainerspg = { module = "org.testcontainers:postgresql", version.ref = "testcontainerspg" }
 liquibase = { module = "org.liquibase:liquibase-core", version.ref = "liquibase" }
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring-context" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
