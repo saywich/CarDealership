@@ -4,10 +4,14 @@ import lombok.AllArgsConstructor;
 import ng.saywich.application.abstractions.car.ICarRepository;
 import ng.saywich.application.contracts.car.ICarService;
 import ng.saywich.application.contracts.car.operations.*;
+import ng.saywich.application.contracts.mappers.cars.CarBrandDtoMapper;
+import ng.saywich.application.contracts.mappers.cars.CarDtoMapper;
+import ng.saywich.application.contracts.mappers.parts.*;
+import ng.saywich.application.contracts.mappers.parts.options.*;
 import ng.saywich.domain.car.Car;
 import ng.saywich.domain.car.CarModel;
 import ng.saywich.domain.car.parts.OptionSet;
-import ng.saywich.application.presentationmappers.cars.CarDtoMapper;
+import ng.saywich.domain.value.Price;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -18,6 +22,14 @@ public class CarService implements ICarService {
     private ICarRepository repository;
     private CarDtoMapper mapper;
 
+    private EngineOptionDtoMapper engineDtoMapper;
+    private TransmissionOptionDtoMapper transmissionDtoMapper;
+    private RimsOptionDtoMapper rimsDtoMapper;
+    private InteriorOptionDtoMapper interiorDtoMapper;
+    private ColorOptionDtoMapper colorDtoMapper;
+    private BodyTypeOptionDtoMapper bodyTypeDtoMapper;
+    private CarBrandDtoMapper carBrandDtoMapper;
+
     @Override
     public CreateCar.Response create(CreateCar.Request request) {
         CarModel.CarModelBuilder builder = CarModel.builder();
@@ -27,16 +39,16 @@ public class CarService implements ICarService {
         builder.name(request.name());
 
         optionSetBuilder.optionSetId(UUID.randomUUID());
-        optionSetBuilder.engine(request.engine());
-        optionSetBuilder.transmission(request.transmission());
-        optionSetBuilder.rims(request.rims());
-        optionSetBuilder.interior(request.interior());
-        optionSetBuilder.bodyType(request.bodyType());
-        optionSetBuilder.color(request.color());
+        optionSetBuilder.engine(engineDtoMapper.toOption(request.engine()));
+        optionSetBuilder.transmission(transmissionDtoMapper.toOption(request.transmission()));
+        optionSetBuilder.rims(rimsDtoMapper.toOption(request.rims()));
+        optionSetBuilder.interior(interiorDtoMapper.toOption(request.interior()));
+        optionSetBuilder.bodyType(bodyTypeDtoMapper.toOption(request.bodyType()));
+        optionSetBuilder.color(colorDtoMapper.toOption(request.color()));
         builder.optionSet(optionSetBuilder.build());
 
-        builder.brand(request.brand());
-        builder.basePrice(request.basePrice());
+        builder.brand(carBrandDtoMapper.toCarBrand(request.brand()));
+        builder.basePrice(new Price(request.basePrice()));
 
         CarModel model = builder.build();
         Car car = new Car(UUID.randomUUID(), request.vinNumber(), model);

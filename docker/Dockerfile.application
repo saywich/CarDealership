@@ -1,4 +1,4 @@
-FROM gradle:jdk17-ubi10
+FROM gradle:jdk21-corretto
 
 WORKDIR /app
 

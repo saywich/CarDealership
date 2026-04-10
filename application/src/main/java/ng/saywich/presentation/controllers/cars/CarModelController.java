@@ -2,12 +2,12 @@ package ng.saywich.presentation.controllers.cars;
 
 import ng.saywich.application.contracts.car.ICarModelService;
 import ng.saywich.application.contracts.car.operations.*;
-import ng.saywich.presentation.dtos.cars.CarModelDto;
-import ng.saywich.presentation.dtos.cars.CarModelFilterDto;
-import ng.saywich.presentation.mappers.cars.CarModelDtoMapper;
-import ng.saywich.presentation.mappers.cars.CarModelFilterDtoMapper;
+import ng.saywich.application.contracts.dtos.cars.CarModelDto;
+import ng.saywich.application.contracts.dtos.cars.CarModelFilterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,16 +58,16 @@ public class CarModelController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<CarModelDto> updateCarModel(@RequestBody CarModelDto carModelDto) {
+    public ResponseEntity<CarModelDto> updateCarModel(@RequestBody UpdateCarModel.Request request) {
         return ResponseEntity.ok(
-            carModelService.update(new UpdateCarModel.Request(carModelDto)).model()
+            carModelService.update(request).model()
         );
     }
 
     @DeleteMapping("/")
-    public ResponseEntity<CarModelDto> deleteCarModel(@RequestBody CarModelDto carModelDto) {
+    public ResponseEntity<CarModelDto> deleteCarModel(@RequestBody DeleteCarModel.Request request) {
         return ResponseEntity.ok(
-            carModelService.delete(new DeleteCarModel.Request(carModelDto.modelId())).model()
+            carModelService.delete(request).model()
         );
     }
 }

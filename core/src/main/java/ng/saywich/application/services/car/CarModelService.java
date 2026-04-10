@@ -7,11 +7,12 @@ import ng.saywich.application.abstractions.carparts.IOptionSetRepository;
 import ng.saywich.application.abstractions.carparts.IPartRepository;
 import ng.saywich.application.contracts.car.ICarModelService;
 import ng.saywich.application.contracts.car.operations.*;
+import ng.saywich.application.contracts.mappers.cars.CarModelDtoMapper;
+import ng.saywich.application.contracts.mappers.cars.CarModelFilterDtoMapper;
+import ng.saywich.application.contracts.mappers.cars.OptionSetDtoMapper;
 import ng.saywich.domain.car.*;
 import ng.saywich.domain.car.parts.*;
 import ng.saywich.domain.value.Price;
-import ng.saywich.application.presentationmappers.cars.CarModelDtoMapper;
-import ng.saywich.application.presentationmappers.cars.CarModelFilterDtoMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +29,10 @@ public class CarModelService implements ICarModelService {
     private IPartRepository<Rims> rimsRepository;
     private IPartRepository<Interior> interiorRepository;
     private IPartRepository<Color> colorRepository;
+
     private CarModelDtoMapper carModelMapper;
     private CarModelFilterDtoMapper filterMapper;
+    private OptionSetDtoMapper optionSetMapper;
 
     @Override
     public CreateCarModel.Response create(CreateCarModel.Request request) {
@@ -143,11 +146,11 @@ public class CarModelService implements ICarModelService {
     @Override
     public ConfigureCarModel.Response configure(ConfigureCarModel.Request request) {
         AvailableOptions options = repository.getAvailableOptionsForModel(
-            request.model().getModelId());
+            request.model().modelId());
 
         CarModelConfigurer configurer = new CarModelConfigurer(
             options,
-            request.model().getOptionSet().toBuilder()
+            optionSetMapper.toOptionSet(request.model().optionSet()).toBuilder()
         );
 
         configurer.setEngine(request.configuration().engine());
@@ -158,6 +161,10 @@ public class CarModelService implements ICarModelService {
         configurer.setBodyType(request.configuration().bodyType());
 
         return new ConfigureCarModel.Response(
-            request.model().toBuilder().optionSet(configurer.configure()).build());
+            carModelMapper.toCarModelDto(carModelMapper.toCarModel(request.model())
+                .toBuilder()
+                .optionSet(configurer.configure())
+                .build())
+        );
     }
 }

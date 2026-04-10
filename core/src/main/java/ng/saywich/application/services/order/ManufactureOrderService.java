@@ -3,14 +3,14 @@ package ng.saywich.application.services.order;
 import lombok.AllArgsConstructor;
 import ng.saywich.application.abstractions.order.IManufactureOrderRepository;
 import ng.saywich.application.abstractions.order.IManagerRepository;
+import ng.saywich.application.contracts.mappers.cars.CarModelDtoMapper;
+import ng.saywich.application.contracts.mappers.purchasing.CustomerDtoMapper;
+import ng.saywich.application.contracts.mappers.purchasing.ManufactureOrderDtoMapper;
 import ng.saywich.application.contracts.order.IManufactureOrderService;
 import ng.saywich.application.contracts.order.operations.*;
 import ng.saywich.domain.purchasing.Manager;
 import ng.saywich.domain.purchasing.order.CarManufactureOrder;
 import ng.saywich.domain.purchasing.order.states.PendingOrderState;
-import ng.saywich.application.presentationmappers.cars.CarModelDtoMapper;
-import ng.saywich.application.presentationmappers.purchasing.CustomerDtoMapper;
-import ng.saywich.application.presentationmappers.purchasing.ManufactureOrderDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +35,23 @@ public class ManufactureOrderService implements IManufactureOrderService {
 
     @Autowired
     private ManufactureOrderDtoMapper orderDtoMapper;
+
+    @Override
+    public QueryManufactureOrder.Response query(QueryManufactureOrder.Request request) {
+        if (request.filter() != null) {
+            return new QueryManufactureOrder.Response(
+                repository.queryWithFilter(request.filter()).stream()
+                    .map(orderDtoMapper::toOrderDto)
+                    .toList()
+            );
+        }
+
+        return new QueryManufactureOrder.Response(
+            repository.query(request.ids()).stream()
+                .map(orderDtoMapper::toOrderDto)
+                .toList()
+        );
+    }
 
     @Override
     public CreateManufactureOrder.Response create(CreateManufactureOrder.Request request) {

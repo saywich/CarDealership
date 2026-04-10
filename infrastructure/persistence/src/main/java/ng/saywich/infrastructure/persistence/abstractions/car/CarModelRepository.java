@@ -49,7 +49,7 @@ public class CarModelRepository implements ICarModelRepository {
         int clampedPageSize = Math.clamp(pageSize, 1, 100);
 
         List<CarModelDao> modelDaoList = carModelIds.length == 0
-            ? carModelDaoRepository.findAll(Pageable.ofSize(clampedPageSize).withPage(page)).toList()
+            ? carModelDaoRepository.findAll(Pageable.ofSize(clampedPageSize).withPage(page - 1)).toList()
             : carModelDaoRepository.findAllById(Arrays.stream(carModelIds).toList());
 
         return modelDaoList.stream()

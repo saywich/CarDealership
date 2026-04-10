@@ -1,9 +1,6 @@
 package ng.saywich.application.contracts.car.operations;
 
-import ng.saywich.domain.car.CarModel;
-import ng.saywich.presentation.dtos.cars.CarModelDto;
-
-import java.util.List;
+import ng.saywich.application.contracts.dtos.cars.CarModelDto;
 
 public final class UpdateCarModel {
     private UpdateCarModel() {}

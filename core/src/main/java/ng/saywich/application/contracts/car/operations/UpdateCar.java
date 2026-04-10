@@ -1,7 +1,6 @@
 package ng.saywich.application.contracts.car.operations;
 
-import ng.saywich.domain.car.Car;
-import ng.saywich.presentation.dtos.cars.CarDto;
+import ng.saywich.application.contracts.dtos.cars.CarDto;
 
 public final class UpdateCar {
     private UpdateCar() {}

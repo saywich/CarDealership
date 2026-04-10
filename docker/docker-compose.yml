@@ -26,6 +26,24 @@ services:
       postgres:
         condition: service_healthy
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=${KEYCLOAK_ADMIN}
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+
+#      - KC_HOSTNAME=localhost
+#      - KC_HOSTNAME_PORT=9090
+#      - KC_HOSTNAME_STRICT=false
+#      - KC_HOSTNAME_STRICT_HTTPS=false
+#      - KC_HTTP_ENABLED=true
+#      - KC_PROXY=edge
+    ports:
+      - "9090:8080"
+    volumes:
+      - ../keycloak/:/opt/keycloak/data/import/
+    command: ["start-dev", "--import-realm", "--verbose"]
+
   spring-app:
     build:
       context: .
@@ -43,3 +61,5 @@ services:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
+#      keycloak:
+#        condition: service_completed_successfully

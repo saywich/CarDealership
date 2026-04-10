@@ -3,6 +3,8 @@ package ng.saywich.application.contracts.order;
 import ng.saywich.application.contracts.order.operations.*;
 
 public interface IManufactureOrderService {
+    QueryManufactureOrder.Response query(QueryManufactureOrder.Request request);
+
     CreateManufactureOrder.Response create(CreateManufactureOrder.Request request);
 
     AcceptOrder.Response acceptOrder(AcceptOrder.Request request);

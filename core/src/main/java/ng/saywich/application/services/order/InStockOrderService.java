@@ -2,15 +2,15 @@ package ng.saywich.application.services.order;
 
 import lombok.AllArgsConstructor;
 import ng.saywich.application.abstractions.order.IInStockOrderRepository;
+import ng.saywich.application.contracts.mappers.cars.CarDtoMapper;
+import ng.saywich.application.contracts.mappers.purchasing.CustomerDtoMapper;
+import ng.saywich.application.contracts.mappers.purchasing.InStockOrderDtoMapper;
 import ng.saywich.application.contracts.order.IInStockOrderService;
 import ng.saywich.application.abstractions.order.IManagerRepository;
 import ng.saywich.application.contracts.order.operations.*;
 import ng.saywich.domain.purchasing.Manager;
 import ng.saywich.domain.purchasing.order.CarInStockOrder;
 import ng.saywich.domain.purchasing.order.states.PendingOrderState;
-import ng.saywich.application.presentationmappers.cars.CarDtoMapper;
-import ng.saywich.application.presentationmappers.purchasing.CustomerDtoMapper;
-import ng.saywich.application.presentationmappers.purchasing.InStockOrderDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +35,23 @@ public class InStockOrderService implements IInStockOrderService {
 
     @Autowired
     private InStockOrderDtoMapper orderDtoMapper;
+
+    @Override
+    public QueryInStockOrder.Response query(QueryInStockOrder.Request request) {
+        if (request.filter() != null) {
+            return new QueryInStockOrder.Response(
+                repository.queryWithFilter(request.filter()).stream()
+                    .map(orderDtoMapper::toOrderDto)
+                    .toList()
+            );
+        }
+
+        return new QueryInStockOrder.Response(
+            repository.query(request.ids()).stream()
+                .map(orderDtoMapper::toOrderDto)
+                .toList()
+        );
+    }
 
     @Override
     public CreateInStockOrder.Response create(CreateInStockOrder.Request request) {

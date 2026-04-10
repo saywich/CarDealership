@@ -3,6 +3,8 @@ package ng.saywich.application.contracts.order;
 import ng.saywich.application.contracts.order.operations.*;
 
 public interface IInStockOrderService {
+    QueryInStockOrder.Response query(QueryInStockOrder.Request request);
+
     CreateInStockOrder.Response create(CreateInStockOrder.Request request);
 
     AcceptOrder.Response acceptOrder(AcceptOrder.Request request);

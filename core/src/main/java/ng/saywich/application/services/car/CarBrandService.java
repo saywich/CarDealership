@@ -4,8 +4,8 @@ import ng.saywich.application.abstractions.car.ICarBrandRepository;
 import ng.saywich.application.contracts.car.ICarBrandService;
 import ng.saywich.application.contracts.car.operations.CreateCarBrand;
 import ng.saywich.application.contracts.car.operations.QueryCarBrands;
+import ng.saywich.application.contracts.mappers.cars.CarBrandDtoMapper;
 import ng.saywich.domain.car.CarBrand;
-import ng.saywich.application.presentationmappers.cars.CarBrandDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

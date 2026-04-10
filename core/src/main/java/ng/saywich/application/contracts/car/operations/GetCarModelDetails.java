@@ -1,8 +1,7 @@
 package ng.saywich.application.contracts.car.operations;
 
+import ng.saywich.application.contracts.dtos.cars.CarModelDto;
 import ng.saywich.domain.car.AvailableOptions;
-import ng.saywich.domain.car.CarModel;
-import ng.saywich.presentation.dtos.cars.CarModelDto;
 
 import java.util.UUID;
 

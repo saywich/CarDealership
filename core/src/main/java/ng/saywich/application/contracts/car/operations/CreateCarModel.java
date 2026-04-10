@@ -1,12 +1,8 @@
 package ng.saywich.application.contracts.car.operations;
 
-import ng.saywich.domain.car.CarBrand;
-import ng.saywich.domain.car.CarModel;
-import ng.saywich.domain.car.CarOption;
+import ng.saywich.application.contracts.dtos.cars.CarModelDto;
 import ng.saywich.domain.car.enums.BodyType;
 import ng.saywich.domain.car.parts.*;
-import ng.saywich.domain.value.Price;
-import ng.saywich.presentation.dtos.cars.CarModelDto;
 
 import java.math.BigDecimal;
 import java.util.UUID;

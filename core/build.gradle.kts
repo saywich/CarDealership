@@ -8,9 +8,12 @@ repositories {
 }
 
 dependencies {
+    compileOnly(libs.mapstruct)
     compileOnly(libs.lombok)
+
+    annotationProcessor(libs.mapstruct.processor)
     annotationProcessor(libs.lombok)
-    annotationProcessor(libs.mapstruct)
+    annotationProcessor(libs.lombok.mapstruct.binding)
 
     implementation(libs.spring.context)
 

@@ -1,13 +1,8 @@
 package ng.saywich.application.contracts.order.operations;
 
-import ng.saywich.domain.car.Car;
-import ng.saywich.domain.purchasing.Customer;
-import ng.saywich.domain.purchasing.Manager;
-import ng.saywich.domain.purchasing.order.CarInStockOrder;
-import ng.saywich.domain.purchasing.order.states.OrderState;
-import ng.saywich.presentation.dtos.cars.CarDto;
-import ng.saywich.presentation.dtos.purchasing.CustomerDto;
-import ng.saywich.presentation.dtos.purchasing.InStockOrderDto;
+import ng.saywich.application.contracts.dtos.cars.CarDto;
+import ng.saywich.application.contracts.dtos.purchasing.CustomerDto;
+import ng.saywich.application.contracts.dtos.purchasing.InStockOrderDto;
 
 public final class CreateInStockOrder {
     private CreateInStockOrder() {}

@@ -1,12 +1,8 @@
 package ng.saywich.presentation.controllers.cars;
 
-import ng.saywich.application.contracts.car.ICarModelService;
 import ng.saywich.application.contracts.car.ICarService;
 import ng.saywich.application.contracts.car.operations.*;
-import ng.saywich.presentation.dtos.cars.CarDto;
-import ng.saywich.presentation.mappers.cars.CarDtoMapper;
-import ng.saywich.presentation.mappers.cars.CarModelDtoMapper;
-import ng.saywich.presentation.mappers.cars.CarModelFilterDtoMapper;
+import ng.saywich.application.contracts.dtos.cars.CarDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
