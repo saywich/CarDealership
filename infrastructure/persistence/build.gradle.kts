@@ -1,6 +1,13 @@
 plugins {
-    alias(libs.plugins.spring.boot)
     alias(libs.plugins.spring.dm)
+}
+
+dependencyManagement {
+    imports {
+        val bootVersion = libs.plugins.spring.boot.get().version
+
+        mavenBom("org.springframework.boot:spring-boot-dependencies:$bootVersion")
+    }
 }
 
 dependencies {
@@ -23,8 +30,5 @@ dependencies {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
-        showStandardStreams = true
-    }
+    testLogging.showStandardStreams = true
 }

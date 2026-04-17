@@ -22,7 +22,7 @@ import java.util.random.RandomGenerator;
 @AllArgsConstructor
 public class InStockOrderService implements IInStockOrderService {
     @Autowired
-    private IInStockOrderRepository repository;
+    private IInStockOrderRepository inStockOrderRepository;
 
     @Autowired
     private IManagerRepository managerRepository;
@@ -40,14 +40,14 @@ public class InStockOrderService implements IInStockOrderService {
     public QueryInStockOrder.Response query(QueryInStockOrder.Request request) {
         if (request.filter() != null) {
             return new QueryInStockOrder.Response(
-                repository.queryWithFilter(request.filter()).stream()
+                inStockOrderRepository.queryWithFilter(request.filter()).stream()
                     .map(orderDtoMapper::toOrderDto)
                     .toList()
             );
         }
 
         return new QueryInStockOrder.Response(
-            repository.query(request.ids()).stream()
+            inStockOrderRepository.query(request.ids()).stream()
                 .map(orderDtoMapper::toOrderDto)
                 .toList()
         );
@@ -66,57 +66,67 @@ public class InStockOrderService implements IInStockOrderService {
             carDtoMapper.toCar(request.car())
         );
 
-        repository.createOrder(order);
+        inStockOrderRepository.createOrder(order);
 
         return new CreateInStockOrder.Response(orderDtoMapper.toOrderDto(order));
     }
 
     @Override
     public AcceptOrder.Response acceptOrder(AcceptOrder.Request request) {
-        CarInStockOrder order = repository.query(
+        CarInStockOrder order = inStockOrderRepository.query(
             new UUID[] { request.orderId() }).get(0);
 
         order.accept();
+
+        inStockOrderRepository.updateOrder(order);
 
         return new AcceptOrder.Response(order.getOrderId(), order.getOrderState().getState());
     }
 
     @Override
     public WaitForPaymentOrder.Response waitForPaymentOrder(WaitForPaymentOrder.Request request) {
-        CarInStockOrder order = repository.query(
+        CarInStockOrder order = inStockOrderRepository.query(
             new UUID[] { request.orderId() }).get(0);
 
         order.waitForPayment();
+
+        inStockOrderRepository.updateOrder(order);
 
         return new WaitForPaymentOrder.Response(order.getOrderId(), order.getOrderState().getState());
     }
 
     @Override
     public PayOrder.Response payOrder(PayOrder.Request request) {
-        CarInStockOrder order = repository.query(
+        CarInStockOrder order = inStockOrderRepository.query(
             new UUID[] { request.orderId() }).get(0);
 
         order.pay();
+
+        inStockOrderRepository.updateOrder(order);
 
         return new PayOrder.Response(order.getOrderId(), order.getOrderState().getState());
     }
 
     @Override
     public CompleteOrder.Response completeOrder(CompleteOrder.Request request) {
-        CarInStockOrder order = repository.query(
+        CarInStockOrder order = inStockOrderRepository.query(
             new UUID[] { request.orderId() }).get(0);
 
         order.complete();
+
+        inStockOrderRepository.updateOrder(order);
 
         return new CompleteOrder.Response(order.getOrderId(), order.getOrderState().getState());
     }
 
     @Override
     public CancelOrder.Response cancelOrder(CancelOrder.Request request) {
-        CarInStockOrder order = repository.query(
+        CarInStockOrder order = inStockOrderRepository.query(
             new UUID[] { request.orderId() }).get(0);
 
         order.cancel();
+
+        inStockOrderRepository.updateOrder(order);
 
         return new CancelOrder.Response(order.getOrderId(), order.getOrderState().getState());
     }

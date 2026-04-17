@@ -46,7 +46,7 @@ public class CarModelRepository implements ICarModelRepository {
 
     @Override
     public List<CarModel> queryPage(UUID[] carModelIds, int pageSize, int page) {
-        int clampedPageSize = Math.clamp(pageSize, 1, 100);
+        int clampedPageSize = Math.max(1, Math.min(100, pageSize));
 
         List<CarModelDao> modelDaoList = carModelIds.length == 0
             ? carModelDaoRepository.findAll(Pageable.ofSize(clampedPageSize).withPage(page - 1)).toList()
@@ -61,7 +61,7 @@ public class CarModelRepository implements ICarModelRepository {
 
     @Override
     public List<CarModel> queryPageWithFilter(CarModelFilter filter, int pageSize, int page) {
-        int clampedPageSize = Math.clamp(pageSize, 1, 100);
+        int clampedPageSize = Math.max(1, Math.min(100, pageSize));
 
         return carModelDaoRepository.findAll(
                 new CarModelSpecification(filter),

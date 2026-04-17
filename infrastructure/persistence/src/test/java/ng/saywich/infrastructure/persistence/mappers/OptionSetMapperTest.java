@@ -1,10 +1,5 @@
 package ng.saywich.infrastructure.persistence.mappers;
 
-import ng.saywich.domain.car.CarModel;
-import ng.saywich.domain.car.enums.BodyType;
-import ng.saywich.domain.car.enums.DriveTrain;
-import ng.saywich.domain.car.enums.FuelType;
-import ng.saywich.domain.car.enums.TransmissionType;
 import ng.saywich.domain.car.parts.OptionSet;
 import ng.saywich.infrastructure.persistence.OptionSetDaoMockRepository;
 import ng.saywich.infrastructure.persistence.mappers.cars.CarBrandMapperImpl;
@@ -12,8 +7,6 @@ import ng.saywich.infrastructure.persistence.mappers.cars.OptionSetMapper;
 import ng.saywich.infrastructure.persistence.mappers.cars.OptionSetMapperImpl;
 import ng.saywich.infrastructure.persistence.mappers.parts.*;
 import ng.saywich.infrastructure.persistence.mappers.parts.options.*;
-import ng.saywich.infrastructure.persistence.models.cars.CarBrandDao;
-import ng.saywich.infrastructure.persistence.models.cars.CarModelDao;
 import ng.saywich.infrastructure.persistence.models.cars.OptionSetDao;
 import ng.saywich.infrastructure.persistence.models.parts.*;
 import ng.saywich.infrastructure.persistence.models.parts.options.*;
@@ -23,11 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.Date;
-import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {

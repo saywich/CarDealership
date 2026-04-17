@@ -8,8 +8,11 @@ import ng.saywich.application.contracts.order.IManufactureOrderService;
 import ng.saywich.application.contracts.order.operations.*;
 import ng.saywich.application.contracts.dtos.purchasing.ManufactureOrderDto;
 import ng.saywich.application.contracts.mappers.purchasing.ManufactureOrderDtoMapper;
+import ng.saywich.presentation.security.evaluators.InStockOrderSecurityEvaluator;
+import ng.saywich.presentation.security.evaluators.ManufactureOrderSecurityEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +25,13 @@ public class ManufactureOrderController {
     @Autowired
     IManufactureOrderService service;
 
+    @Autowired
+    ManufactureOrderSecurityEvaluator orderSecurityEvaluator;
+
     @GetMapping("/customer")
     @ApiResponse(responseCode = "200", description = "Order list")
     @ApiResponse(responseCode = "400", description = "Invalid data")
-    @ApiResponse(responseCode = "402", description = "Unauthorized")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "403", description = "No permission")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
         description = "Order filter",
@@ -55,7 +61,7 @@ public class ManufactureOrderController {
     @GetMapping("/manager")
     @ApiResponse(responseCode = "200", description = "Order list")
     @ApiResponse(responseCode = "400", description = "Invalid data")
-    @ApiResponse(responseCode = "402", description = "Unauthorized")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "403", description = "No permission")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
         description = "Order filter",
@@ -85,7 +91,7 @@ public class ManufactureOrderController {
     @GetMapping("/all")
     @ApiResponse(responseCode = "200", description = "Order list")
     @ApiResponse(responseCode = "400", description = "Invalid data")
-    @ApiResponse(responseCode = "402", description = "Unauthorized")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "403", description = "No permission")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
         description = "Order filter",
@@ -110,6 +116,7 @@ public class ManufactureOrderController {
     }
 
     @PostMapping("/accept")
+    @PreAuthorize("@orderSecurityEvaluator.managerIsResponsibleFor(#request.orderId, principal)")
     public ResponseEntity<AcceptOrder.Response> acceptOrder(
         @AuthenticationPrincipal Jwt jwt,
         @RequestBody AcceptOrder.Request request
@@ -118,6 +125,7 @@ public class ManufactureOrderController {
     }
 
     @PostMapping("/waitForPayment")
+    @PreAuthorize("@orderSecurityEvaluator.managerIsResponsibleFor(#request.orderId, principal)")
     public ResponseEntity<WaitForPaymentOrder.Response> waitForPaymentOrder(
         @AuthenticationPrincipal Jwt jwt,
         @RequestBody WaitForPaymentOrder.Request request
@@ -126,6 +134,7 @@ public class ManufactureOrderController {
     }
 
     @PostMapping("/pay")
+    @PreAuthorize("@orderSecurityEvaluator.managerIsResponsibleFor(#request.orderId, principal)")
     public ResponseEntity<PayOrder.Response> payOrder(
         @AuthenticationPrincipal Jwt jwt,
         @RequestBody PayOrder.Request request
@@ -134,6 +143,7 @@ public class ManufactureOrderController {
     }
 
     @PostMapping("/wait_for_delivery")
+    @PreAuthorize("@orderSecurityEvaluator.managerIsResponsibleFor(#request.orderId, principal)")
     public ResponseEntity<WaitForDeliveryOrder.Response> waitForDeliveryOrder(
         @AuthenticationPrincipal Jwt jwt,
         @RequestBody WaitForDeliveryOrder.Request request
@@ -142,7 +152,8 @@ public class ManufactureOrderController {
     }
 
     @PostMapping("/deliver_car")
-    public ResponseEntity<DeliverCarOrder.Response> waitForDeliveryOrder(
+    @PreAuthorize("@orderSecurityEvaluator.managerIsResponsibleFor(#request.orderId, principal)")
+    public ResponseEntity<DeliverCarOrder.Response> deliverOrder(
         @AuthenticationPrincipal Jwt jwt,
         @RequestBody DeliverCarOrder.Request request
     ) {
@@ -150,6 +161,7 @@ public class ManufactureOrderController {
     }
 
     @PostMapping("/complete")
+    @PreAuthorize("@orderSecurityEvaluator.managerIsResponsibleFor(#request.orderId, principal)")
     public ResponseEntity<CompleteOrder.Response> completeOrder(
         @AuthenticationPrincipal Jwt jwt,
         @RequestBody CompleteOrder.Request request
@@ -158,6 +170,7 @@ public class ManufactureOrderController {
     }
 
     @PostMapping("/cancel")
+    @PreAuthorize("@orderSecurityEvaluator.userIsRelatedTo(#request.orderId, principal)")
     public ResponseEntity<CancelOrder.Response> cancelOrder(
         @AuthenticationPrincipal Jwt jwt,
         @RequestBody CancelOrder.Request request

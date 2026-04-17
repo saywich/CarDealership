@@ -15,7 +15,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class TestDriveOrderService implements ITestDriveOrderService {
-    ITestDriveOrderRepository repository;
+    ITestDriveOrderRepository testDriveOrderRepository;
 
     private CustomerDtoMapper customerDtoMapper;
 
@@ -32,7 +32,7 @@ public class TestDriveOrderService implements ITestDriveOrderService {
             request.date()
         );
 
-        repository.createOrder(order);
+        testDriveOrderRepository.createOrder(order);
 
         return new CreateTestDriveOrder.Response(orderDtoMapper.toOrderDto(order));
     }

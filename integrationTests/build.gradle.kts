@@ -1,7 +1,14 @@
 plugins {
     id("java")
-    alias(libs.plugins.spring.boot)
     alias(libs.plugins.spring.dm)
+}
+
+dependencyManagement {
+    imports {
+        val bootVersion = libs.plugins.spring.boot.get().version
+
+        mavenBom("org.springframework.boot:spring-boot-dependencies:$bootVersion")
+    }
 }
 
 repositories {
@@ -10,7 +17,6 @@ repositories {
 
 dependencies {
     implementation(libs.liquibase)
-    implementation("org.springframework.boot:spring-boot-starter-web")
 
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
@@ -20,7 +26,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation(project(":domain"))
-    implementation(project(":application"))
     implementation(project(":core"))
     implementation(project(":infrastructure:persistence"))
 
@@ -34,11 +39,16 @@ dependencies {
 }
 
 tasks.named<Test>("test") {
-    useJUnitPlatform()
-    testLogging.showStandardStreams = true
+    enabled = false
 }
 
-//tasks.register<Test>("integrationTest") {
-//    useJUnitPlatform()
-//    testLogging.showStandardStreams = true
-//}
+tasks.register<Test>("integrationTest") {
+    useJUnitPlatform()
+    testLogging.showStandardStreams = true
+
+    val testSourceSet = sourceSets.test.get()
+    testClassesDirs = testSourceSet.output.classesDirs
+    classpath = testSourceSet.runtimeClasspath
+
+    dependsOn(tasks.testClasses)
+}

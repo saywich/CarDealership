@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 public class CarBrandsMatchersDirector {
     void direct(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         registry
-            .requestMatchers("/car_models/**")
-            .hasAnyRole("admin", "warehouse_admin")
-            .requestMatchers(HttpMethod.GET, "/car_models/**").permitAll();
+            .requestMatchers(HttpMethod.GET, "/car_brands/**").permitAll()
+            .requestMatchers("/car_brands/**")
+                .hasAnyRole("admin", "warehouse_admin");
     }
 }
 

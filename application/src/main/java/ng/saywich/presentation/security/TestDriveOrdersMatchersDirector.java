@@ -10,7 +10,7 @@ public class TestDriveOrdersMatchersDirector {
     void direct(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         registry
             .requestMatchers(HttpMethod.POST, "/test_drive_orders/")
-            .hasAnyRole("user", "admin");
+                .hasAnyRole("user", "admin");
     }
 }
 

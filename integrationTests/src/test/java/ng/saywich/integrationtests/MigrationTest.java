@@ -6,12 +6,18 @@ import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import ng.saywich.infrastructure.persistence.jparepositories.cars.ICarModelDaoRepository;
-import ng.saywich.infrastructure.persistence.jparepositories.parts.IEngineDaoRepository;import ng.saywich.infrastructure.persistence.jparepositories.parts.IInteriorDaoRepository;import ng.saywich.infrastructure.persistence.jparepositories.parts.IRimsDaoRepository;import ng.saywich.infrastructure.persistence.jparepositories.parts.ITransmissionDaoRepository;import ng.saywich.infrastructure.persistence.models.cars.CarModelDao;
-import ng.saywich.infrastructure.persistence.models.parts.EngineDao;import ng.saywich.infrastructure.persistence.models.parts.InteriorDao;import ng.saywich.infrastructure.persistence.models.parts.RimsDao;import ng.saywich.infrastructure.persistence.models.parts.TransmissionDao;import ng.saywich.presentation.Application;
+import ng.saywich.infrastructure.persistence.jparepositories.parts.IEngineDaoRepository;
+import ng.saywich.infrastructure.persistence.jparepositories.parts.IInteriorDaoRepository;
+import ng.saywich.infrastructure.persistence.jparepositories.parts.IRimsDaoRepository;
+import ng.saywich.infrastructure.persistence.jparepositories.parts.ITransmissionDaoRepository;
+import ng.saywich.infrastructure.persistence.models.cars.CarModelDao;
+import ng.saywich.infrastructure.persistence.models.parts.EngineDao;
+import ng.saywich.infrastructure.persistence.models.parts.InteriorDao;
+import ng.saywich.infrastructure.persistence.models.parts.RimsDao;
+import ng.saywich.infrastructure.persistence.models.parts.TransmissionDao;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +31,11 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;import java.util.concurrent.TransferQueue;
+import java.util.List;
 
-@SpringBootTest(classes = Application.class)
 @Testcontainers
 @ActiveProfiles("test")
+@SpringBootTest(classes = TestApplication.class)
 public class MigrationTest {
     @Autowired
     private ICarModelDaoRepository carModelDaoRepository;

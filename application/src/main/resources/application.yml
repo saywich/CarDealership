@@ -14,18 +14,18 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://keycloak:8080/realms/automotive-auth
+          issuer-uri: http://localhost:9090/realms/automotive-auth
 
       client:
         provider:
           keycloak:
-            issuer-uri: http://keycloak:8080/realms/automotive-auth
+            issuer-uri: http://localhost:9090/realms/automotive-auth
             user-name-attribute: preferred_username
 
-            authorization-uri: http://keycloak:8080/realms/automotive-auth/protocol/openid-connect/auth
-            token-uri: http://keycloak:8080/realms/automotive-auth/protocol/openid-connect/token
-            jwk-set-uri: http://keycloak:8080/realms/automotive-auth/protocol/openid-connect/certs
-            user-info-uri: http://keycloak:8080/realms/automotive-auth/protocol/openid-connect/userinfo
+            authorization-uri: http://localhost:9090/realms/automotive-auth/protocol/openid-connect/auth
+            token-uri: http://localhost:9090/realms/automotive-auth/protocol/openid-connect/token
+            jwk-set-uri: http://localhost:9090/realms/automotive-auth/protocol/openid-connect/certs
+            user-info-uri: http://localhost:9090/realms/automotive-auth/protocol/openid-connect/userinfo
 
         registration:
           keycloak:

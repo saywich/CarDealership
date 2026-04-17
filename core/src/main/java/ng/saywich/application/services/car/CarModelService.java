@@ -121,7 +121,7 @@ public class CarModelService implements ICarModelService {
 
     @Override
     public QueryCarModels.Response queryPage(QueryCarModels.Request request, int pageSize, int page) {
-        int clampedPageSize = Math.clamp(pageSize, 1, 100);
+        int clampedPageSize = Math.max(1, Math.min(100, pageSize));
 
         return new QueryCarModels.Response(
             repository.queryPage(new UUID[0], clampedPageSize, page).stream()

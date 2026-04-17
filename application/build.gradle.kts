@@ -31,14 +31,12 @@ dependencies {
     implementation(libs.springdoc)
 
     testImplementation(libs.junit.jupiter)
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+    testImplementation("org.springframework.security:spring-security-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-
-//tasks.register<Test>("integrationTest") {
-//    useJUnitPlatform()
-//    testLogging.showStandardStreams = true
-//}

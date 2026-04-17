@@ -26,7 +26,7 @@ public class InStockOrderSpecification implements Specification<InStockOrderDao>
 
         if (filter.customerId() != null) {
             Join<InStockOrderDao, CustomerDao> customerJoin
-                = root.join("customer_id", JoinType.INNER);
+                = root.join("customer", JoinType.INNER);
 
             predicates.add(criteriaBuilder.equal(
                 customerJoin.get("id"),
@@ -36,11 +36,11 @@ public class InStockOrderSpecification implements Specification<InStockOrderDao>
 
         if (filter.managerId() != null) {
             Join<InStockOrderDao, ManagerDao> managerJoin
-                = root.join("manager_id", JoinType.INNER);
+                = root.join("manager", JoinType.INNER);
 
             predicates.add(criteriaBuilder.equal(
                 managerJoin.get("id"),
-                filter.customerId()
+                filter.managerId()
             ));
         }
 

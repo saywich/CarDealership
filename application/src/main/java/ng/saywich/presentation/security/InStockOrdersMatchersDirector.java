@@ -10,16 +10,16 @@ public class InStockOrdersMatchersDirector {
     void direct(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         registry
             .requestMatchers(HttpMethod.GET, "/in_stock_orders/customer")
-            .hasRole("customer")
+                .hasRole("user")
             .requestMatchers(HttpMethod.GET, "/in_stock_orders/manager")
-            .hasRole("manager")
-            .requestMatchers(HttpMethod.GET, "/in_stock_orders/all")
-            .hasAnyRole("admin", "warehouse_admin")
-            .requestMatchers(HttpMethod.POST, "/in_stock_orders/")
-            .hasRole("user")
-            .requestMatchers("/in_stock_orders/**")
-            .hasAnyRole("manager", "admin")
+                .hasRole("manager")
             .requestMatchers("/in_stock_orders/cancel")
-            .hasRole("user");
+                .hasAnyRole("user", "manager")
+            .requestMatchers(HttpMethod.GET, "/in_stock_orders/all")
+                .hasAnyRole("admin", "warehouse_admin")
+            .requestMatchers(HttpMethod.POST, "/in_stock_orders")
+                .hasRole("user")
+            .requestMatchers("/in_stock_orders/**")
+                .hasAnyRole("manager", "admin");
     }
 }

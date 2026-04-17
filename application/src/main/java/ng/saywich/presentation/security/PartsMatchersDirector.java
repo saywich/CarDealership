@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 public class PartsMatchersDirector {
     void direct(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         registry
+            .requestMatchers(HttpMethod.GET, "/parts/**").permitAll()
             .requestMatchers("/parts/**")
-            .hasAnyRole("admin", "warehouse_admin")
-            .requestMatchers(HttpMethod.GET, "/parts/**").permitAll();
+                .hasAnyRole("admin", "warehouse_admin");
     }
 }
