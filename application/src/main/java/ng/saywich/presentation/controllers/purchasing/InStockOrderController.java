@@ -11,7 +11,9 @@ import ng.saywich.presentation.security.evaluators.InStockOrderSecurityEvaluator
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +35,18 @@ public class InStockOrderController {
     @ApiResponse(responseCode = "400", description = "Invalid data")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "403", description = "No permission")
-    public ResponseEntity<List<InStockOrderDto>> getCustomerOrders(
-        @AuthenticationPrincipal Jwt jwt
-    ) {
-        String customerId = jwt.getClaimAsString("sub");
+    public ResponseEntity<List<InStockOrderDto>> getCustomerOrders() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || auth.getPrincipal() == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        if (!(auth.getPrincipal() instanceof Jwt jwt)) {
+            return ResponseEntity.status(401).build();
+        }
+
+        String customerId = jwt.getSubject();
 
         QueryInStockOrder.Request request = new QueryInStockOrder.Request(
             new UUID[0], new OrderFilter(UUID.fromString(customerId), null)
@@ -50,10 +60,18 @@ public class InStockOrderController {
     @ApiResponse(responseCode = "400", description = "Invalid data")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "403", description = "No permission")
-    public ResponseEntity<List<InStockOrderDto>> getManagerOrders(
-        @AuthenticationPrincipal Jwt jwt
-    ) {
-        String managerId = jwt.getClaimAsString("sub");
+    public ResponseEntity<List<InStockOrderDto>> getManagerOrders() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || auth.getPrincipal() == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        if (!(auth.getPrincipal() instanceof Jwt jwt)) {
+            return ResponseEntity.status(401).build();
+        }
+
+        String managerId = jwt.getSubject();
 
         QueryInStockOrder.Request request = new QueryInStockOrder.Request(
             new UUID[0], new OrderFilter(null, UUID.fromString(managerId))
