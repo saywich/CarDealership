@@ -14,7 +14,6 @@ dependencyManagement {
 repositories {
     mavenCentral()
 }
-
 dependencies {
     implementation(libs.liquibase)
 
@@ -22,7 +21,6 @@ dependencies {
     annotationProcessor(libs.lombok)
     annotationProcessor("org.testcontainers:junit-jupiter")
 
-    implementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation(project(":domain"))
@@ -34,6 +32,7 @@ dependencies {
 
     testImplementation(libs.testcontainers)
     testImplementation(libs.testcontainerspg)
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
 }

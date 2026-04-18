@@ -1,6 +1,5 @@
 package ng.saywich.presentation.test;
 
-import ng.saywich.application.abstractions.order.IInStockOrderRepository;
 import ng.saywich.application.contracts.dtos.cars.CarDto;
 import ng.saywich.application.contracts.dtos.purchasing.CustomerDto;
 import ng.saywich.application.contracts.dtos.purchasing.InStockOrderDto;
@@ -10,6 +9,7 @@ import ng.saywich.application.contracts.order.IInStockOrderService;
 import ng.saywich.application.contracts.order.operations.AcceptOrder;
 import ng.saywich.application.contracts.order.operations.QueryInStockOrder;
 import ng.saywich.domain.purchasing.order.states.OrderState;
+import ng.saywich.presentation.security.evaluators.InStockOrderSecurityEvaluator;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
@@ -48,7 +48,10 @@ public class InStockOrderControllerSecurityTest {
     private IInStockOrderService orderService;
 
     @MockitoBean
-    private IInStockOrderRepository orderRepository;
+    private InStockOrderSecurityEvaluator evaluator;
+
+    @MockitoBean
+    private DataSource dataSource;
 
     @Test
     public void acceptOrder_NoToken_Returns401() throws Exception {
