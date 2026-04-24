@@ -1,6 +1,7 @@
 {
   "realm": "automotive-auth",
   "enabled": true,
+  "sslRequired": "NONE",
   "users": [
     {
       "username": "admin_user",
@@ -53,6 +54,7 @@
       "realmRoles": ["user"]
     },
     {
+      "id": "b9d4a9ee-e307-4215-839b-62f8e8d2d479",
       "username": "wa_user",
       "enabled": true,
       "emailVerified": true,
@@ -97,7 +99,11 @@
         "http://localhost:8080/login/oauth2/code/keycloak",
         "http://localhost:8080/*"
       ],
-      "webOrigins": ["http://localhost:8080"],
+      "webOrigins": [
+        "http://localhost:8080",
+        "http://localhost:8081",
+        "http://localhost:8082"
+      ],
       "directAccessGrantsEnabled": true,
       "protocolMappers": [
         {

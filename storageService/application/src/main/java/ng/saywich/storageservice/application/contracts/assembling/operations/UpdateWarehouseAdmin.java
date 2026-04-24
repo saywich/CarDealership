@@ -1,0 +1,11 @@
+package ng.saywich.storageservice.application.contracts.assembling.operations;
+
+import ng.saywich.storageservice.domain.assembling.WarehouseAdmin;
+
+public final class UpdateWarehouseAdmin {
+    private UpdateWarehouseAdmin() {}
+
+    public record Request(WarehouseAdmin admin) {}
+
+    public record Response(WarehouseAdmin admin) {}
+}

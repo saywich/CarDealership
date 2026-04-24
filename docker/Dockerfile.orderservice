@@ -1,0 +1,5 @@
+FROM alpine/java:21-jre
+
+WORKDIR /app
+
+ENTRYPOINT [ "java", "-jar", "orderService/presentation/build/libs/presentation.jar" ]

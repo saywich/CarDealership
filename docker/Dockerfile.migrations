@@ -1,7 +1,4 @@
 FROM liquibase/liquibase:latest
 RUN lpm add postgresql --global
 
-COPY ../liquibase /liquibase
-COPY ../migrations /liquibase/migrations
-
 ENTRYPOINT [ "liquibase", "update" ]

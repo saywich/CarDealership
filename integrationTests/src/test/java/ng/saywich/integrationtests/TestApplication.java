@@ -8,13 +8,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {
-    "ng.saywich.application",
-    "ng.saywich.infrastructure",
-    "ng.saywich.presentation",
-    "ng.saywich.domain"
+    "ng.saywich.storageservice.infrastructure.persistence"
 })
-@EnableJpaRepositories(basePackages = {"ng.saywich.infrastructure"})
-@EntityScan(basePackages = {"ng.saywich.infrastructure"})
+@EnableJpaRepositories(basePackages = {
+    "ng.saywich.storageservice.infrastructure.persistence.jparepositories"
+})
+@EntityScan(basePackages = {
+    "ng.saywich.storageservice.infrastructure.persistence.models"
+})
 @EnableJpaAuditing
 public class TestApplication {
 }

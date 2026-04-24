@@ -1,0 +1,78 @@
+spring:
+  datasource:
+    url: ${JDBC_POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/realms/automotive-auth
+          jwk-set-uri: http://keycloak:8080/realms/automotive-auth/protocol/openid-connect/certs
+
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://keycloak:8080/realms/automotive-auth
+            user-name-attribute: preferred_username
+
+            authorization-uri: http://localhost:9090/realms/automotive-auth/protocol/openid-connect/auth
+            token-uri: http://keycloak:8080/realms/automotive-auth/protocol/openid-connect/token
+            jwk-set-uri: http://keycloak:8080/realms/automotive-auth/protocol/openid-connect/certs
+            user-info-uri: http://keycloak:8080/realms/automotive-auth/protocol/openid-connect/userinfo
+
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: spring-app
+            client-secret: ${KEYCLOAK_CLIENT_SECRET}
+            scope: openid,profile,email
+
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: ng.saywich.*
+
+  liquibase:
+    change-log: classpath:db/changelog/changelog.yaml
+
+  logging:
+    level:
+      org.springframework.security: TRACE
+      org.keycloak: TRACE
+      org.springframework.web: TRACE
+      org.springframework.security.oauth2: TRACE
+      org.springframework.web.client: TRACE
+
+kafka:
+  topics:
+    in-stock-order-request: in-stock-order-request
+    in-stock-order-response: in-stock-order-response
+    manufacture-order-request: manufacture-order-request
+    manufacture-order-response: manufacture-order-response
+    test-drive-order-request: test-drive-order-request
+    test-drive-order-response: test-drive-order-response
+
+keycloak:
+  public-token-url: "http://localhost:9090/realms/automotive-auth/protocol/openid-connect/token"
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: spring-app
+      client-secret: ${KEYCLOAK_CLIENT_SECRET}
+      realm: automotive-auth

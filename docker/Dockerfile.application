@@ -2,4 +2,4 @@ FROM gradle:jdk21-corretto
 
 WORKDIR /app
 
-ENTRYPOINT [ "./gradlew", "--no-daemon", ":application:bootRun" ]
+ENTRYPOINT [ "./gradlew", "--no-daemon", "assemble" ]

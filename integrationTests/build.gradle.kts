@@ -23,9 +23,9 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    implementation(project(":domain"))
-    implementation(project(":core"))
-    implementation(project(":infrastructure:persistence"))
+    implementation(project(":shared:domain"))
+    implementation(project(":storageService:application"))
+    implementation(project(":storageService:infrastructure:persistence"))
 
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
