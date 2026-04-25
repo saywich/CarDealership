@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 public class ManufactureOrdersMatchersDirector {
     void direct(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         registry
+            .requestMatchers(HttpMethod.GET, "/manufacture_orders/all")
+            .authenticated()
             .requestMatchers(HttpMethod.GET, "/manufacture_orders/")
             .authenticated()
             .requestMatchers(HttpMethod.POST, "/manufacture_orders/")

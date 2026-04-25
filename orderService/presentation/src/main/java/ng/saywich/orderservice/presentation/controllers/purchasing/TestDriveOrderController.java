@@ -20,7 +20,6 @@ public class TestDriveOrderController {
 
     @PostMapping("/")
     public ResponseEntity<TestDriveOrderDto> createOrder(
-        @AuthenticationPrincipal Jwt jwt,
         @RequestBody CreateTestDriveOrder.Request request
     ) {
         return ResponseEntity.ok(service.create(request).order());

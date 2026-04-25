@@ -22,6 +22,10 @@ public class InStockOrderRepository implements IInStockOrderRepository {
 
     @Override
     public List<CarInStockOrder> query(UUID[] orderIds) {
+        if (orderIds.length == 0) {
+            return repository.findAll().stream().map(mapper::toOrder).toList();
+        }
+
         return repository.findAllById(List.of(orderIds)).stream()
             .map(o -> mapper.toOrder(o))
             .toList();

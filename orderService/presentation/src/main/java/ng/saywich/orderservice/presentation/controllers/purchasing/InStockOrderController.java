@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -29,65 +30,33 @@ public class InStockOrderController {
     @Autowired
     InStockOrderSecurityEvaluator orderSecurityEvaluator;
 
-    @GetMapping("/customer")
-    @ApiResponse(responseCode = "200", description = "Order list")
-    @ApiResponse(responseCode = "400", description = "Invalid data")
-    @ApiResponse(responseCode = "401", description = "Unauthorized")
-    @ApiResponse(responseCode = "403", description = "No permission")
-    public ResponseEntity<List<InStockOrderDto>> getCustomerOrders() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (auth == null || auth.getPrincipal() == null) {
-            return ResponseEntity.status(401).build();
-        }
-
-        if (!(auth.getPrincipal() instanceof Jwt jwt)) {
-            return ResponseEntity.status(401).build();
-        }
-
-        String customerId = jwt.getSubject();
-
-        QueryInStockOrder.Request request = new QueryInStockOrder.Request(
-            new UUID[0], new OrderFilter(UUID.fromString(customerId), null)
-        );
-
-        return ResponseEntity.ok(service.query(request).orders());
-    }
-
-    @GetMapping("/manager")
-    @ApiResponse(responseCode = "200", description = "Order list")
-    @ApiResponse(responseCode = "400", description = "Invalid data")
-    @ApiResponse(responseCode = "401", description = "Unauthorized")
-    @ApiResponse(responseCode = "403", description = "No permission")
-    public ResponseEntity<List<InStockOrderDto>> getManagerOrders() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (auth == null || auth.getPrincipal() == null) {
-            return ResponseEntity.status(401).build();
-        }
-
-        if (!(auth.getPrincipal() instanceof Jwt jwt)) {
-            return ResponseEntity.status(401).build();
-        }
-
-        String managerId = jwt.getSubject();
-
-        QueryInStockOrder.Request request = new QueryInStockOrder.Request(
-            new UUID[0], new OrderFilter(null, UUID.fromString(managerId))
-        );
-
-        return ResponseEntity.ok(service.query(request).orders());
-    }
-
     @GetMapping("/all")
     @ApiResponse(responseCode = "200", description = "Order list")
     @ApiResponse(responseCode = "400", description = "Invalid data")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "403", description = "No permission")
-    public ResponseEntity<List<InStockOrderDto>> getOrders(
-        QueryInStockOrder.Request request
-    ) {
-        return ResponseEntity.ok(service.query(request).orders());
+    public ResponseEntity<List<InStockOrderDto>> getOrders() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || auth.getPrincipal() == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        if (!(auth.getPrincipal() instanceof Jwt jwt)) {
+            return ResponseEntity.status(401).build();
+        }
+
+        for (GrantedAuthority authority : auth.getAuthorities()) {
+            if (authority.getAuthority() == "ROLE_user") {
+                return ResponseEntity.ok(service.query(new QueryInStockOrder.Request(
+                    new UUID[0], new OrderFilter(UUID.fromString(jwt.getSubject()), null)
+                )).orders());
+            }
+        }
+
+        return ResponseEntity.ok(service.query(new QueryInStockOrder.Request(
+            new UUID[0], null
+        )).orders());
     }
 
     @PostMapping("/")
@@ -103,7 +72,6 @@ public class InStockOrderController {
         )
     )
     public ResponseEntity<InStockOrderDto> createOrder(
-        @AuthenticationPrincipal Jwt jwt,
         @RequestBody CreateInStockOrder.Request request
     ) {
         return ResponseEntity.ok(service.create(request).order());
@@ -124,7 +92,6 @@ public class InStockOrderController {
     )
     @PreAuthorize("@orderSecurityEvaluator.managerIsResponsibleFor(#request.orderId, principal)")
     public ResponseEntity<AcceptOrder.Response> acceptOrder(
-        @AuthenticationPrincipal Jwt jwt,
         @RequestBody AcceptOrder.Request request
     ) {
         return ResponseEntity.ok(service.acceptOrder(request));
@@ -145,7 +112,6 @@ public class InStockOrderController {
     )
     @PreAuthorize("@orderSecurityEvaluator.managerIsResponsibleFor(#request.orderId, principal)")
     public ResponseEntity<WaitForPaymentOrder.Response> waitForPaymentOrder(
-        @AuthenticationPrincipal Jwt jwt,
         @RequestBody WaitForPaymentOrder.Request request
     ) {
         return ResponseEntity.ok(service.waitForPaymentOrder(request));
@@ -166,7 +132,6 @@ public class InStockOrderController {
     )
     @PreAuthorize("@orderSecurityEvaluator.managerIsResponsibleFor(#request.orderId, principal)")
     public ResponseEntity<PayOrder.Response> payOrder(
-        @AuthenticationPrincipal Jwt jwt,
         @RequestBody PayOrder.Request request
     ) {
         return ResponseEntity.ok(service.payOrder(request));
@@ -187,7 +152,6 @@ public class InStockOrderController {
     )
     @PreAuthorize("@orderSecurityEvaluator.managerIsResponsibleFor(#request.orderId, principal)")
     public ResponseEntity<PrepareOrder.Response> prepareOrder(
-        @AuthenticationPrincipal Jwt jwt,
         @RequestBody PrepareOrder.Request request
     ) {
         return ResponseEntity.ok(service.prepareOrder(request));
@@ -208,7 +172,6 @@ public class InStockOrderController {
     )
     @PreAuthorize("@orderSecurityEvaluator.managerIsResponsibleFor(#request.orderId, principal)")
     public ResponseEntity<CompleteOrder.Response> completeOrder(
-        @AuthenticationPrincipal Jwt jwt,
         @RequestBody CompleteOrder.Request request
     ) {
         return ResponseEntity.ok(service.completeOrder(request));
@@ -229,7 +192,6 @@ public class InStockOrderController {
     )
     @PreAuthorize("@orderSecurityEvaluator.userIsRelatedTo(#request.orderId, principal)")
     public ResponseEntity<CancelOrder.Response> cancelOrder(
-        @AuthenticationPrincipal Jwt jwt,
         @RequestBody CancelOrder.Request request
     ) {
         return ResponseEntity.ok(service.cancelOrder(request));

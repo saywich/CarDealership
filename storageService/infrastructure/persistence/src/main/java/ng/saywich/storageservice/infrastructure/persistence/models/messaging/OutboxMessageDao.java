@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ng.saywich.storageservice.application.models.messaging.EventType;
 import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Date;
 import java.util.UUID;
@@ -37,6 +39,7 @@ public class OutboxMessageDao {
     @Column(name = "event_type")
     private EventType eventType;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "payload", columnDefinition = "jsonb")
     private String payload;
 
