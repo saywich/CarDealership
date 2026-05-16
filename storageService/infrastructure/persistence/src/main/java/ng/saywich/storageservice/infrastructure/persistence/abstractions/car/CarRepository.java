@@ -44,6 +44,13 @@ public class CarRepository implements ICarRepository {
     }
 
     @Override
+    public List<Car> queryInStock() {
+        return carDaoRepository.findInStock().stream()
+            .map(mapper::toCar)
+            .toList();
+    }
+
+    @Override
     public void createCar(Car car) {
         carDaoRepository.save(mapper.toCarDao(car));
     }

@@ -58,6 +58,12 @@ spring:
       org.springframework.security.oauth2: TRACE
       org.springframework.web.client: TRACE
 
+  grpc:
+    client:
+      channels:
+        storage-service:
+          address: ${STORAGE_GRPC_HOST}:${STORAGE_GRPC_PORT}
+
 kafka:
   topics:
     in-stock-order-request: in-stock-order-request

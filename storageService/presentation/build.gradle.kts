@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     compileOnly(libs.mapstruct)
+    compileOnly(libs.lombok)
 
     annotationProcessor(libs.mapstruct.processor)
     annotationProcessor(libs.lombok)
@@ -15,9 +16,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
+    implementation(platform("org.springframework.grpc:spring-grpc-dependencies:1.0.3"))
+    implementation("org.springframework.grpc:spring-grpc-server-spring-boot-starter")
+
     implementation(libs.keycloak)
     implementation(libs.postgresql)
 
+    implementation(project(":shared:grpc"))
     implementation(project(":shared:domain"))
     implementation(project(":storageService:application"))
     implementation(project(":storageService:infrastructure:persistence"))

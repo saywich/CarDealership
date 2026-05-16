@@ -21,6 +21,7 @@ dependencies {
     implementation(project(":orderService:application"))
     implementation(project(":shared:domain"))
     implementation(project(":orderService:infrastructure:persistence"))
+    implementation(project(":orderService:infrastructure:grpc"))
 
     implementation(libs.springdoc)
 

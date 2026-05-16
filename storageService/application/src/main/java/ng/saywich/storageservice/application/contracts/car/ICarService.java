@@ -15,4 +15,6 @@ public interface ICarService {
     public QueryCars.Response query(QueryCars.Request request);
 
     public QueryCars.Response queryPage(QueryCars.Request request, int pageSize, int page);
+
+    public QueryCars.Response queryInStock();
 }

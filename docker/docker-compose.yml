@@ -119,6 +119,8 @@ services:
       - KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}
       - GRADLE_USER_HOME=/tmp/gradle-cache
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - STORAGE_GRPC_HOST=${STORAGE_GRPC_HOST}
+      - STORAGE_GRPC_PORT=${STORAGE_GRPC_PORT}
     depends_on:
       kafka-init:
         condition: service_completed_successfully
@@ -144,6 +146,7 @@ services:
       - KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}
       - GRADLE_USER_HOME=/tmp/gradle-cache
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - STORAGE_GRPC_PORT=${STORAGE_GRPC_PORT}
     depends_on:
       kafka-init:
         condition: service_completed_successfully

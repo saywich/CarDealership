@@ -91,4 +91,11 @@ public class CarService implements ICarService {
                 .map(mapper::toCarDto)
                 .toList());
     }
+
+    @Override
+    public QueryCars.Response queryInStock() {
+        return new QueryCars.Response(repository.queryInStock().stream()
+            .map(mapper::toCarDto)
+            .toList());
+    }
 }

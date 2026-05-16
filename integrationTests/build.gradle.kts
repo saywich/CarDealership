@@ -27,9 +27,19 @@ dependencies {
     implementation(project(":storageService:application"))
     implementation(project(":storageService:infrastructure:persistence"))
 
+    testImplementation(platform("io.grpc:grpc-bom:1.81.0"))
+
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+    testImplementation(project(":shared:grpc"))
+    testImplementation(project(":storageService:application"))
+    testImplementation(project(":orderService:application"))
+    testImplementation(project(":orderService:infrastructure:grpc"))
+
+    testImplementation("io.grpc:grpc-inprocess")
+    testImplementation("io.grpc:grpc-protobuf")
+    testImplementation("io.grpc:grpc-stub")
     testImplementation(libs.testcontainers)
     testImplementation(libs.testcontainerspg)
     testImplementation("org.springframework.boot:spring-boot-starter-test")

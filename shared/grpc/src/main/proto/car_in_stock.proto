@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "ng.saywich.shared.grpc.carstock";
+option java_outer_classname = "StockCarProto";
+
+service StockCarService {
+  rpc ListCarsInStock(ListCarsInStockRequest) returns (ListCarsInStockResponse);
+}
+
+message ListCarsInStockRequest {}
+
+message ListCarsInStockResponse {
+  repeated StockCar cars = 1;
+}
+
+message StockCar {
+  string car_id = 1;
+  string vin_number = 2;
+  string model_id = 3;
+  string model_name = 4;
+  string brand_id = 5;
+  string brand_name = 6;
+  string base_price = 7;
+}
